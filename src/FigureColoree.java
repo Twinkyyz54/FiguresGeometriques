@@ -10,6 +10,7 @@ public abstract class FigureColoree {
 	
 	public FigureColoree() {
 		tab_mem = new Point[this.nbPoints()];
+		couleur = Color.BLACK;
 	}
 	
 	public abstract int nbPoints();
@@ -18,9 +19,11 @@ public abstract class FigureColoree {
 	
 	public abstract void modifierPoints(Point[] points);
 	
+	public abstract boolean estDedans(int x, int y);
+	
 	public void affiche(Graphics g) {
 		if(g != null) {
-			g.setColor(Color.BLACK);
+			g.setColor(this.couleur);
 			for(Point p : tab_mem) {
 				g.drawRect(p.rendreX() - TAILLE_CARRE_SELECTION / 2, p.rendreY() - TAILLE_CARRE_SELECTION / 2, TAILLE_CARRE_SELECTION, TAILLE_CARRE_SELECTION);
 			}
@@ -28,15 +31,16 @@ public abstract class FigureColoree {
 	}
 	
 	public void selectionne() {
-		selected = true;
+		this.selected = true;
 	}
 	
 	public void deSelectionne() {
-		selected = false;
+		this.selected = false;
 	}
 	
 	public void changeCouleur(Color couleur) {
-		this.couleur = couleur;
+		if(couleur != null) {
+			this.couleur = couleur;
+		}
 	}
-	
 }

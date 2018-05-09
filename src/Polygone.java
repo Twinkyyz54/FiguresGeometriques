@@ -7,14 +7,19 @@ public abstract class Polygone extends FigureColoree {
 	
 	public Polygone() {
 		super();
-		p = new Polygon();
+		this.p = new Polygon();
+	}
+	
+	@Override
+	public boolean estDedans(int x, int y) {
+		return this.p.contains(x, y);
 	}
 	
 	@Override
 	public void affiche(Graphics g) {
 		super.affiche(g);
 		if(g != null) {	
-			g.drawPolygon(p);
+			g.drawPolygon(this.p);
 		}
 	}
 	
