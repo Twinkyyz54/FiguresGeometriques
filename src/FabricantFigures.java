@@ -4,6 +4,10 @@ import java.awt.event.MouseListener;
 public class FabricantFigures implements MouseListener {
 	
 	private DessinModele model;
+	
+	public FabricantFigures(DessinModele model) {
+		this.model = model;
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -12,7 +16,7 @@ public class FabricantFigures implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
+		this.model.ajoutePt(e.getX(), e.getY());
 	}
 
 	@Override
