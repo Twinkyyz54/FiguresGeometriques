@@ -13,7 +13,9 @@ public abstract class Polygone extends FigureColoree {
 	@Override
 	public void affiche(Graphics g) {
 		super.affiche(g);
-		g.drawPolygon(p);
+		if(g != null) {	
+			g.drawPolygon(p);
+		}
 	}
 	
 	@Override
@@ -23,9 +25,11 @@ public abstract class Polygone extends FigureColoree {
 	
 	@Override
 	public void modifierPoints(Point[] points) {
-		this.p = new Polygon();
-		for(Point point : points) {
-			this.p.addPoint(point.rendreX(), point.rendreY());
+		if(points != null) {
+			this.p = new Polygon();
+			for(Point point : points) {
+				this.p.addPoint(point.rendreX(), point.rendreY());
+			}
 		}
 	}
 }

@@ -10,6 +10,8 @@ public class Point {
 	}
 	
 	public double distance(Point p) {
+		if(p == null)
+			return -1;
 		return Math.sqrt((this.x - p.rendreX()) * (this.x - p.rendreX()) + (this.y - p.rendreY()) * (this.y - p.rendreY()));
 	}
 	
