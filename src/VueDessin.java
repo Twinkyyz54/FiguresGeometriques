@@ -17,6 +17,7 @@ public class VueDessin extends JPanel implements Observer {
 		}
 	}
 	
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if(lfg != null) {

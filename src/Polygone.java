@@ -19,6 +19,7 @@ public abstract class Polygone extends FigureColoree {
 	public void affiche(Graphics g) {
 		super.affiche(g);
 		if(g != null) {	
+			g.setColor(this.couleur);
 			g.drawPolygon(this.p);
 		}
 	}

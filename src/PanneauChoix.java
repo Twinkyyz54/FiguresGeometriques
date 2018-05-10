@@ -1,6 +1,14 @@
 import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 public class PanneauChoix extends JPanel {
 	
@@ -8,6 +16,54 @@ public class PanneauChoix extends JPanel {
 	
 	public PanneauChoix(DessinModele dessin) {
 		this.dessin = dessin;
+		this.setLayout(new GridLayout(2, 1));
+		JPanel panelcombobox = new JPanel();
+		final JComboBox<String> choixforme = new JComboBox<String>(new String[] {"Quadrilatère", "Triangle", "Rectangle"});
+		choixforme.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				PanneauChoix.this.dessin.construit(PanneauChoix.this.creeFigure(choixforme.getSelectedIndex()));
+			}
+		});
+		final JComboBox<String> choixcouleur = new JComboBox<String>(new String[] {"Noir", "Bleu", "Cyan", "Gris foncé", "Gris", "Vert", "Gris clair", "Violet", "Orange", "Rose", "Rouge", "Blanc", "Jaune"});
+		panelcombobox.add(choixforme);
+		panelcombobox.add(choixcouleur);
+		JPanel panelboutons = new JPanel();
+		String[] names = {"Nouvelle figure", "Tracé à main levée", "Manipulations"};
+		final ButtonGroup group = new ButtonGroup();
+		ActionListener listener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() instanceof JRadioButton) {
+					JRadioButton radiobutton = (JRadioButton) e.getSource();
+					group.clearSelection();
+					radiobutton.setSelected(true);
+					if(radiobutton.getText().equals("Nouvelle figure")) {
+						choixforme.setEnabled(true);
+						choixcouleur.setEnabled(true);
+					} else if(radiobutton.getText().equals("Tracé à main levée")) {
+						choixforme.setEnabled(false);
+						choixcouleur.setEnabled(true);
+					} else {
+						choixforme.setEnabled(false);
+						choixcouleur.setEnabled(true);
+					}
+				}
+			}
+		};
+		for(int i = 0; i < names.length; i++) {
+			JRadioButton radiobutton = new JRadioButton(names[i]);
+			radiobutton.setFocusable(false);
+			radiobutton.addActionListener(listener);
+			group.add(radiobutton);
+			panelboutons.add(radiobutton);
+			if(i == 0) {
+				radiobutton.setSelected(true);
+			}
+		}
+		this.add(panelboutons);
+		this.add(panelcombobox);
+		this.dessin.construit(new Quadrilatere());
 	}
 	
 	private FigureColoree creeFigure(int index) {
@@ -16,7 +72,7 @@ public class PanneauChoix extends JPanel {
 			return new Quadrilatere();
 		case 1:
 			return new Triangle();
-		case 3:
+		case 2:
 			return new Rectangle();
 		default:
 			return null;

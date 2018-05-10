@@ -27,7 +27,7 @@ public class DessinModele extends Observable {
 		if(figure != null && this.lfg.contains(figure)) {
 			figure.changeCouleur(couleur);
 			this.setChanged();
-			this.countObservers();
+			this.notifyObservers();
 		}
 	}
 	
@@ -45,11 +45,9 @@ public class DessinModele extends Observable {
 				copie[i] = this.points_Cliques[i];
 			}
 			copie[i] = new Point(x, y);
-			if(this.nbClic + 1 == this.figureEnCours.nbClics()) {
+			if(this.nbClic + 1 == this.figureEnCours.nbPoints()) {
 				this.figureEnCours.modifierPoints(copie);
-				this.lfg.add(this.figureEnCours);
-				this.setChanged();
-				this.notifyObservers();
+				this.ajoute(this.figureEnCours);
 				this.points_Cliques = new Point[0];
 				this.nbClic = 0;
 				this.figureEnCours = null;

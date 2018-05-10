@@ -27,6 +27,7 @@ public class Fenetre {
 		panel.add(new PanneauChoix(this.model), BorderLayout.NORTH);
 		this.dessin = new VueDessin();
 		this.dessin.addMouseListener(new FabricantFigures(this.model));	
+		this.model.addObserver(this.dessin);
 		panel.add(dessin, BorderLayout.CENTER);
 		frame.setContentPane(panel);
 		frame.pack();
