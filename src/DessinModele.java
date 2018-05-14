@@ -50,7 +50,13 @@ public class DessinModele extends Observable {
 				this.ajoute(this.figureEnCours);
 				this.points_Cliques = new Point[0];
 				this.nbClic = 0;
-				this.figureEnCours = null;
+				try {
+					FigureColoree nouvelle = this.figureEnCours.getClass().newInstance();
+					nouvelle.changeCouleur(this.figureEnCours.couleur);
+					this.figureEnCours = nouvelle;
+				} catch(InstantiationException | IllegalAccessException e) { 
+					this.figureEnCours = null;
+				}
 			} else {
 				this.points_Cliques = copie;
 				this.nbClic++;
@@ -87,5 +93,4 @@ public class DessinModele extends Observable {
 		this.setChanged();
 		this.notifyObservers();
 	}
-
 }
