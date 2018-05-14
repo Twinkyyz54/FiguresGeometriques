@@ -18,14 +18,27 @@ public class PanneauChoix extends JPanel {
 		this.dessin = dessin;
 		this.setLayout(new GridLayout(2, 1));
 		JPanel panelcombobox = new JPanel();
+		final JComboBox<String> choixcouleur = new JComboBox<String>(new String[] {"Noir", "Bleu", "Cyan", "Gris foncé", "Gris", "Vert", "Gris clair", "Violet", "Orange", "Rose", "Rouge", "Blanc", "Jaune"});
+		choixcouleur.setFocusable(false);
+		choixcouleur.addItemListener(new ItemListener() {	
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				FigureColoree fc = PanneauChoix.this.dessin.getFigureEnCours();
+				if(fc != null) {
+					fc.changeCouleur(PanneauChoix.this.determineCouleur(choixcouleur.getSelectedIndex()));
+				}
+			}
+		});
 		final JComboBox<String> choixforme = new JComboBox<String>(new String[] {"Quadrilatère", "Triangle", "Rectangle"});
+		choixforme.setFocusable(false);
 		choixforme.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				PanneauChoix.this.dessin.construit(PanneauChoix.this.creeFigure(choixforme.getSelectedIndex()));
+				FigureColoree fc = PanneauChoix.this.creeFigure(choixforme.getSelectedIndex());
+				fc.changeCouleur(PanneauChoix.this.determineCouleur(choixcouleur.getSelectedIndex()));
+				PanneauChoix.this.dessin.construit(fc);
 			}
 		});
-		final JComboBox<String> choixcouleur = new JComboBox<String>(new String[] {"Noir", "Bleu", "Cyan", "Gris foncé", "Gris", "Vert", "Gris clair", "Violet", "Orange", "Rose", "Rouge", "Blanc", "Jaune"});
 		panelcombobox.add(choixforme);
 		panelcombobox.add(choixcouleur);
 		JPanel panelboutons = new JPanel();
