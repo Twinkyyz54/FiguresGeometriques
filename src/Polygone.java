@@ -26,12 +26,12 @@ public abstract class Polygone extends FigureColoree {
 	
 	@Override
 	public int nbClics() {
-		return this.p.npoints;
+		return this.nbPoints();
 	}
 	
 	@Override
 	public void modifierPoints(Point[] points) {
-		if(points != null) {
+		if(points != null && points.length == this.nbPoints()) {
 			this.p = new Polygon();
 			for(int i = 0; i < points.length; i++) {
 				Point point = points[i];
