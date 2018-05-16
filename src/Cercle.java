@@ -33,13 +33,13 @@ public class Cercle extends FigureColoree {
 	
 	@Override
 	public void affiche(Graphics g) {
-		super.affiche(g);
 		if(tab_mem != null && tab_mem.length == this.nbPoints()) {
 			Point centre = tab_mem[0];
 			int dist = (int) Math.round(centre.distance(tab_mem[1]));
 			g.setColor(this.couleur);
 			g.fillOval(centre.rendreX() - dist, centre.rendreY() - dist, dist * 2, dist * 2);
 		}
+		super.affiche(g);
 	}
 
 }

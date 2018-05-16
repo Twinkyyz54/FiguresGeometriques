@@ -163,11 +163,14 @@ public class DessinModele extends Observable {
 		this.setChanged();
 		this.notifyObservers();
 	}
-	
+
 	/**
 	 * Methode permettant de selectionner la derniere figure construite dont le point se trouve dedans
-	 * @param x L'abscisse du point
-	 * @param y L'ordonnee du points
+	 * 
+	 * @param x
+	 *            L'abscisse du point
+	 * @param y
+	 *            L'ordonnee du points
 	 */
 	public void selectionnerFigure(int x, int y) {
 		FigureColoree selectionnee = null;
@@ -179,6 +182,29 @@ public class DessinModele extends Observable {
 		}
 		if(selectionnee != null) {
 			selectionnee.selectionne();
+			this.setChanged();
+			this.notifyObservers();
 		}
+	}
+
+	/**
+	 * Methode accesseur permettant de recuperer le type d'action en cours du modele dessin
+	 * 
+	 * @return Le type d'action en cours du modele dessin
+	 */
+	public int getType() {
+		return this.type;
+	}
+
+	/**
+	 * Methode permettant de changer le type d'action en cours pour le modele de dessin
+	 * 
+	 * @param type
+	 *            Le nouveau type d'action
+	 */
+	public void changerType(int type) {
+		this.type = type;
+		this.setChanged();
+		this.notifyObservers();
 	}
 }

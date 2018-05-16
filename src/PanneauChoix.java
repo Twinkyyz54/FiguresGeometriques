@@ -60,15 +60,20 @@ public class PanneauChoix extends JPanel {
 					JRadioButton radiobutton = (JRadioButton) e.getSource();
 					group.clearSelection();
 					radiobutton.setSelected(true);
+					for(FigureColoree fc : PanneauChoix.this.dessin.getLfg()) {
+						fc.deSelectionne();
+					}
 					if(radiobutton.getText().equals("Nouvelle figure")) {
 						choixforme.setEnabled(true);
 						choixcouleur.setEnabled(true);
+						PanneauChoix.this.dessin.changerType(0);
 					} else if(radiobutton.getText().equals("Tracé à main levée")) {
 						choixforme.setEnabled(false);
 						choixcouleur.setEnabled(true);
 					} else {
 						choixforme.setEnabled(false);
 						choixcouleur.setEnabled(true);
+						PanneauChoix.this.dessin.changerType(2);
 					}
 				}
 			}
