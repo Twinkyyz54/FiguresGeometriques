@@ -5,8 +5,10 @@ import java.util.Observer;
 
 import javax.swing.JPanel;
 
+// Classe representant le panel destine a afficher les dessins de l'utilisateur
 public class VueDessin extends JPanel implements Observer {
-	
+
+	// Liste des figures colorees a dessiner sur le panel
 	private ArrayList<FigureColoree> lfg;
 
 	@Override
@@ -16,7 +18,7 @@ public class VueDessin extends JPanel implements Observer {
 			this.repaint();
 		}
 	}
-	
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);

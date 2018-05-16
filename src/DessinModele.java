@@ -2,19 +2,32 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Observable;
 
+// Classe representant un modele de dessin pour creer et modifier des figures colorees
 public class DessinModele extends Observable {
-	
+
+	// Liste des figures colorees crees
 	private ArrayList<FigureColoree> lfg;
+	// Figure coloree en cours de creation
 	private FigureColoree figureEnCours;
+	// Nombre de clics deja effectues pour la creation de la figure en cours
 	private int nbClic;
+	// Tableau des points deja cliques pour creer la figure coloree
 	private Point[] points_Cliques;
 
-	
+	/**
+	 * Constructeur d'un modele de dessin
+	 */
 	public DessinModele() {
 		this.lfg = new ArrayList<FigureColoree>();
 		this.points_Cliques = new Point[0];
 	}
-	
+
+	/**
+	 * Methode permettant d'ajouter une figure coloree a la liste des celles deja construites
+	 * 
+	 * @param figure
+	 *            La figure a ajouter a la liste
+	 */
 	public void ajoute(FigureColoree figure) {
 		if(figure != null) {
 			this.lfg.add(figure);
@@ -22,7 +35,15 @@ public class DessinModele extends Observable {
 			this.notifyObservers();
 		}
 	}
-	
+
+	/**
+	 * Methode permettant de changer la couleur d'une figure deja construite
+	 * 
+	 * @param figure
+	 *            La figure dont on veut changer la couleur
+	 * @param couleur
+	 *            La nouvelle couleur de la figure
+	 */
 	public void changeCoul(FigureColoree figure, Color couleur) {
 		if(figure != null && this.lfg.contains(figure)) {
 			figure.changeCouleur(couleur);
@@ -30,13 +51,27 @@ public class DessinModele extends Observable {
 			this.notifyObservers();
 		}
 	}
-	
+
+	/**
+	 * Methode permettant de construire une nouvelle figure coloree a partir d'une instance de celle-ci
+	 * 
+	 * @param figure
+	 *            L'instance de la figure coloree a construire
+	 */
 	public void construit(FigureColoree figure) {
 		this.figureEnCours = figure;
 		this.nbClic = 0;
 		this.points_Cliques = new Point[0];
 	}
-	
+
+	/**
+	 * Methode permettant d'ajouter un point a la construction de la figure en cours
+	 * 
+	 * @param x
+	 *            L'abscisse du point a ajouter
+	 * @param y
+	 *            L'ordonnee du point a ajouter
+	 */
 	public void ajoutePt(int x, int y) {
 		if(this.figureEnCours != null) {
 			Point[] copie = new Point[this.nbClic + 1];
@@ -54,7 +89,7 @@ public class DessinModele extends Observable {
 					FigureColoree nouvelle = this.figureEnCours.getClass().newInstance();
 					nouvelle.changeCouleur(this.figureEnCours.couleur);
 					this.figureEnCours = nouvelle;
-				} catch(InstantiationException | IllegalAccessException e) { 
+				} catch(InstantiationException | IllegalAccessException e) {
 					this.figureEnCours = null;
 				}
 			} else {
@@ -63,27 +98,60 @@ public class DessinModele extends Observable {
 			}
 		}
 	}
-	
+
+	/**
+	 * Methode accesseur permettant de recuper le nombre de clics deja effectues pour construire la figure en cours
+	 * 
+	 * @return Le nombre de clics deja effectues pour construire la figure en cours
+	 */
 	public int getNbClic() {
 		return this.nbClic;
 	}
-	
+
+	/**
+	 * Methode permettant de redefinir le de nombre de clics effectues pour construire la figure en cours
+	 * 
+	 * @param nbClic
+	 *            Le nouveau nombre de clics effectues pour constuire la figure en cours
+	 */
 	public void setNbClic(int nbClic) {
 		this.nbClic = nbClic;
 	}
-	
+
+	/**
+	 * Methode accesseur permettant de recuperer la liste de figures crees par le modele de dessin
+	 * 
+	 * @return La liste des figures crees par le modele de dessin
+	 */
 	public ArrayList<FigureColoree> getLfg() {
 		return this.lfg;
 	}
-	
+
+	/**
+	 * Methode accesseur permettant de recuperer la figure en cours de construction
+	 * 
+	 * @return La figure en cours de construction
+	 */
 	public FigureColoree getFigureEnCours() {
 		return this.figureEnCours;
 	}
-	
+
+	/**
+	 * Methode permettant de redefinir la figure en cours de construction
+	 * 
+	 * @param figureEnCours
+	 *            La nouvelle figure en cours de construction
+	 */
 	public void setFigureEnCours(FigureColoree figureEnCours) {
 		this.figureEnCours = figureEnCours;
 	}
-	
+
+	/**
+	 * Methode permettant de redefinir la liste des figures deja construites
+	 * 
+	 * @param lfg
+	 *            La nouvelle liste des figures deja construites
+	 */
 	public void setLfg(ArrayList<FigureColoree> lfg) {
 		if(lfg == null) {
 			this.lfg.clear();

@@ -1,5 +1,6 @@
 import java.awt.Graphics;
 
+// Classe representant une figure coloree de type cercle
 public class Cercle extends FigureColoree {
 	
 	@Override

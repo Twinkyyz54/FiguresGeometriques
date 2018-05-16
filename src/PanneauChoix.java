@@ -10,17 +10,26 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+// Classe representant le panel de boutons permettant a l'utilisateur de choisir le type de dessin a effectuer
 public class PanneauChoix extends JPanel {
-	
+
+	// Le modele de dessin sur lequel s'appuyer pour creer une nouvelle figure a ajouter au dessin
 	private DessinModele dessin;
-	
+
+	/**
+	 * Constructeur du panneau de choix avec les boutons et leurs evenements
+	 * 
+	 * @param dessin
+	 *            Le modele de dessin pour construire les figures
+	 */
 	public PanneauChoix(DessinModele dessin) {
 		this.dessin = dessin;
 		this.setLayout(new GridLayout(2, 1));
 		JPanel panelcombobox = new JPanel();
-		final JComboBox<String> choixcouleur = new JComboBox<String>(new String[] {"Noir", "Bleu", "Cyan", "Gris foncé", "Gris", "Vert", "Gris clair", "Violet", "Orange", "Rose", "Rouge", "Blanc", "Jaune"});
+		final JComboBox<String> choixcouleur = new JComboBox<String>(
+				new String[] { "Noir", "Bleu", "Cyan", "Gris foncé", "Gris", "Vert", "Gris clair", "Violet", "Orange", "Rose", "Rouge", "Blanc", "Jaune" });
 		choixcouleur.setFocusable(false);
-		choixcouleur.addItemListener(new ItemListener() {	
+		choixcouleur.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				FigureColoree fc = PanneauChoix.this.dessin.getFigureEnCours();
@@ -29,7 +38,7 @@ public class PanneauChoix extends JPanel {
 				}
 			}
 		});
-		final JComboBox<String> choixforme = new JComboBox<String>(new String[] {"Quadrilatère", "Triangle", "Rectangle", "Cercle"});
+		final JComboBox<String> choixforme = new JComboBox<String>(new String[] { "Quadrilatère", "Triangle", "Rectangle", "Cercle" });
 		choixforme.setFocusable(false);
 		choixforme.addItemListener(new ItemListener() {
 			@Override
@@ -42,7 +51,7 @@ public class PanneauChoix extends JPanel {
 		panelcombobox.add(choixforme);
 		panelcombobox.add(choixcouleur);
 		JPanel panelboutons = new JPanel();
-		String[] names = {"Nouvelle figure", "Tracé à main levée", "Manipulations"};
+		String[] names = { "Nouvelle figure", "Tracé à main levée", "Manipulations" };
 		final ButtonGroup group = new ButtonGroup();
 		ActionListener listener = new ActionListener() {
 			@Override
@@ -78,7 +87,14 @@ public class PanneauChoix extends JPanel {
 		this.add(panelcombobox);
 		this.dessin.construit(new Quadrilatere());
 	}
-	
+
+	/**
+	 * Methode permettant de retourner une nouvelle instance d'une figure coloree en fonction de d'un index
+	 * 
+	 * @param index
+	 *            L'indice du type de figure coloree a instancier et retourner
+	 * @return Une nouvelle instance de figure coloree
+	 */
 	private FigureColoree creeFigure(int index) {
 		switch(index) {
 		case 0:
@@ -93,7 +109,14 @@ public class PanneauChoix extends JPanel {
 			return null;
 		}
 	}
-	
+
+	/**
+	 * Methode permettant de retourner une instance de couleur en fonction d'un indice
+	 * 
+	 * @param index
+	 *            L'indice de la couleur a instancier et retourner
+	 * @return L'instance de la couleur
+	 */
 	private Color determineCouleur(int index) {
 		switch(index) {
 		case 0:
