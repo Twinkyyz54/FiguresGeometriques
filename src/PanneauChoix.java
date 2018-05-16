@@ -29,7 +29,7 @@ public class PanneauChoix extends JPanel {
 				}
 			}
 		});
-		final JComboBox<String> choixforme = new JComboBox<String>(new String[] {"Quadrilatère", "Triangle", "Rectangle"});
+		final JComboBox<String> choixforme = new JComboBox<String>(new String[] {"Quadrilatère", "Triangle", "Rectangle", "Cercle"});
 		choixforme.setFocusable(false);
 		choixforme.addItemListener(new ItemListener() {
 			@Override
@@ -87,6 +87,8 @@ public class PanneauChoix extends JPanel {
 			return new Triangle();
 		case 2:
 			return new Rectangle();
+		case 3:
+			return new Cercle();
 		default:
 			return null;
 		}

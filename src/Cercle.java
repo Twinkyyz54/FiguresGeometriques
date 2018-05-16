@@ -36,7 +36,8 @@ public class Cercle extends FigureColoree {
 		if(tab_mem != null && tab_mem.length == this.nbPoints()) {
 			Point centre = tab_mem[0];
 			int dist = (int) Math.round(centre.distance(tab_mem[1]));
-			g.fillOval(centre.rendreX() - dist, centre.rendreY() - dist, dist, dist);
+			g.setColor(this.couleur);
+			g.fillOval(centre.rendreX() - dist, centre.rendreY() - dist, dist * 2, dist * 2);
 		}
 	}
 
