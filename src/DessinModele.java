@@ -45,7 +45,7 @@ public class DessinModele extends Observable {
 				copie[i] = this.points_Cliques[i];
 			}
 			copie[i] = new Point(x, y);
-			if(this.nbClic + 1 == this.figureEnCours.nbPoints()) {
+			if(this.nbClic + 1 == this.figureEnCours.nbClics()) {
 				this.figureEnCours.modifierPoints(copie);
 				this.ajoute(this.figureEnCours);
 				this.points_Cliques = new Point[0];
