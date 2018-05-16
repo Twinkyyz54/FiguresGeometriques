@@ -13,6 +13,8 @@ public class DessinModele extends Observable {
 	private int nbClic;
 	// Tableau des points deja cliques pour creer la figure coloree
 	private Point[] points_Cliques;
+	// Type d'action en cours pour le modele de dessin (0 = creation figure, 1 = Tracee a main levee, 2 = Manipulation)
+	private int type;
 
 	/**
 	 * Constructeur d'un modele de dessin
@@ -160,5 +162,23 @@ public class DessinModele extends Observable {
 		}
 		this.setChanged();
 		this.notifyObservers();
+	}
+	
+	/**
+	 * Methode permettant de selectionner la derniere figure construite dont le point se trouve dedans
+	 * @param x L'abscisse du point
+	 * @param y L'ordonnee du points
+	 */
+	public void selectionnerFigure(int x, int y) {
+		FigureColoree selectionnee = null;
+		for(FigureColoree figure : lfg) {
+			figure.deSelectionne();
+			if(figure.estDedans(x, y)) {
+				selectionnee = figure;
+			}
+		}
+		if(selectionnee != null) {
+			selectionnee.selectionne();
+		}
 	}
 }
