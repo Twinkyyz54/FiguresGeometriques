@@ -15,6 +15,8 @@ public class DessinModele extends Observable {
 	private Point[] points_Cliques;
 	// Type d'action en cours pour le modele de dessin (0 = creation figure, 1 = Tracee a main levee, 2 = Manipulation)
 	private int type;
+	// La figure coloree qui est selectionnee
+	private FigureColoree figureSelectionnee;
 
 	/**
 	 * Constructeur d'un modele de dessin
@@ -173,18 +175,21 @@ public class DessinModele extends Observable {
 	 *            L'ordonnee du points
 	 */
 	public void selectionnerFigure(int x, int y) {
-		FigureColoree selectionnee = null;
+		if(this.figureSelectionnee != null) {
+			this.figureSelectionnee.deSelectionne();
+		}
+		FigureColoree selection = null;
 		for(FigureColoree figure : lfg) {
-			figure.deSelectionne();
 			if(figure.estDedans(x, y)) {
-				selectionnee = figure;
+				selection = figure;
 			}
 		}
-		if(selectionnee != null) {
-			selectionnee.selectionne();
-			this.setChanged();
-			this.notifyObservers();
+		this.figureSelectionnee = selection;
+		if(this.figureSelectionnee != null) {
+			this.figureSelectionnee.selectionne();
 		}
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 	/**
@@ -203,8 +208,19 @@ public class DessinModele extends Observable {
 	 *            Le nouveau type d'action
 	 */
 	public void changerType(int type) {
-		this.type = type;
-		this.setChanged();
-		this.notifyObservers();
+		if(type != this.type) {
+			this.type = type;
+			this.setChanged();
+			this.notifyObservers();
+		}
+	}
+
+	/**
+	 * Methode accesseur permettant de recuperer la figure qui est selectionnee
+	 * 
+	 * @return La figure selectionnee
+	 */
+	public FigureColoree getFigureSelectionnee() {
+		return this.figureSelectionnee;
 	}
 }

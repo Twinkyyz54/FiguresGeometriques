@@ -24,7 +24,7 @@ public class FabricantFigures implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if(this.model != null) {
+		if(this.model != null && this.model.getType() == 0) {
 			this.model.ajoutePt(e.getX(), e.getY());
 		}
 	}

@@ -32,10 +32,13 @@ public class PanneauChoix extends JPanel {
 		choixcouleur.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				FigureColoree fc = PanneauChoix.this.dessin.getFigureEnCours();
-				if(fc != null) {
-					fc.changeCouleur(PanneauChoix.this.determineCouleur(choixcouleur.getSelectedIndex()));
+				FigureColoree fc = null;
+				if(PanneauChoix.this.dessin.getType() == 0) {
+					fc = PanneauChoix.this.dessin.getFigureEnCours();
+				} else if(PanneauChoix.this.dessin.getType() == 2) {
+					fc = PanneauChoix.this.dessin.getFigureSelectionnee();
 				}
+				PanneauChoix.this.dessin.changeCoul(fc, PanneauChoix.this.determineCouleur(choixcouleur.getSelectedIndex()));
 			}
 		});
 		final JComboBox<String> choixforme = new JComboBox<String>(new String[] { "Quadrilatère", "Triangle", "Rectangle", "Cercle" });
