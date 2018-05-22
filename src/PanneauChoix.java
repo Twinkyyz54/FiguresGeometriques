@@ -41,7 +41,7 @@ public class PanneauChoix extends JPanel {
 				PanneauChoix.this.dessin.changeCoul(fc, PanneauChoix.this.determineCouleur(choixcouleur.getSelectedIndex()));
 			}
 		});
-		final JComboBox<String> choixforme = new JComboBox<String>(new String[] { "Quadrilatère", "Triangle", "Rectangle", "Cercle" });
+		final JComboBox<String> choixforme = new JComboBox<String>(new String[] { "Quadrilatère", "Triangle", "Rectangle", "Cercle", "Carré", "Losange" });
 		choixforme.setFocusable(false);
 		choixforme.addItemListener(new ItemListener() {
 			@Override
@@ -73,6 +73,7 @@ public class PanneauChoix extends JPanel {
 					} else if(radiobutton.getText().equals("Tracé à main levée")) {
 						choixforme.setEnabled(false);
 						choixcouleur.setEnabled(true);
+						PanneauChoix.this.dessin.changerType(1);
 					} else {
 						choixforme.setEnabled(false);
 						choixcouleur.setEnabled(true);
@@ -113,6 +114,10 @@ public class PanneauChoix extends JPanel {
 			return new Rectangle();
 		case 3:
 			return new Cercle();
+		case 4:
+			return new Carre();
+		case 5:
+			return new Losange();
 		default:
 			return null;
 		}
