@@ -37,12 +37,17 @@ public abstract class Polygone extends FigureColoree {
 	@Override
 	public void modifierPoints(Point[] points) {
 		if(points != null && points.length == this.nbPoints()) {
-			this.p = new Polygon();
+			Polygon nvpoly = new Polygon();
+			Point[] nvtab_mem = new Point[this.nbPoints()];
 			for(int i = 0; i < points.length; i++) {
 				Point point = points[i];
-				this.p.addPoint(point.rendreX(), point.rendreY());
-				tab_mem[i] = point;
+				if(point == null)
+					return;
+				nvpoly.addPoint(point.rendreX(), point.rendreY());
+				nvtab_mem[i] = point;
 			}
+			this.p = nvpoly;
+			this.tab_mem = nvtab_mem;
 		}
 	}
 }

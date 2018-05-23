@@ -17,12 +17,15 @@ public class DessinModele extends Observable {
 	private int type;
 	// La figure coloree qui est selectionnee
 	private FigureColoree figureSelectionnee;
+	// Liste des traits crees par le modele
+	private ArrayList<Trait> traits;
 
 	/**
 	 * Constructeur d'un modele de dessin
 	 */
 	public DessinModele() {
 		this.lfg = new ArrayList<FigureColoree>();
+		this.traits = new ArrayList<Trait>();
 		this.points_Cliques = new Point[0];
 	}
 
@@ -55,7 +58,7 @@ public class DessinModele extends Observable {
 			this.notifyObservers();
 		}
 	}
-	
+
 	public void changePoints(FigureColoree figure, Point[] points) {
 		if(figure != null && this.lfg.contains(figure)) {
 			figure.modifierPoints(points);
@@ -230,5 +233,22 @@ public class DessinModele extends Observable {
 	 */
 	public FigureColoree getFigureSelectionnee() {
 		return this.figureSelectionnee;
+	}
+
+	/**
+	 * Methode accesseur permettant de recuperer la liste des traits
+	 * 
+	 * @return La liste des traits crees
+	 */
+	public ArrayList<Trait> getTraits() {
+		return this.traits;
+	}
+	
+	public void ajouteTrait(Trait trait) {
+		if(trait != null) {
+			this.traits.add(trait);
+			this.setChanged();
+			this.notifyObservers();
+		}
 	}
 }

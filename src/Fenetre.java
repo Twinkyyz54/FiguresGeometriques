@@ -41,6 +41,9 @@ public class Fenetre {
 		panel.add(new PanneauChoix(this.model), BorderLayout.NORTH);
 		this.dessin = new VueDessin();
 		this.dessin.addMouseListener(new FabricantFigures(this.model));
+		TraceTrait tt = new TraceTrait(this.model);
+		this.dessin.addMouseListener(tt);
+		this.dessin.addMouseMotionListener(tt);
 		ManipulateurFormes mf = new ManipulateurFormes(this.model);
 		this.dessin.addMouseListener(mf);
 		this.dessin.addMouseMotionListener(mf);
