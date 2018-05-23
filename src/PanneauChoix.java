@@ -40,7 +40,7 @@ public class PanneauChoix extends JPanel {
 				}
 			}
 		});
-		final JComboBox<String> choixforme = new JComboBox<String>(new String[] { "Quadrilatère", "Triangle", "Rectangle", "Cercle", "Carré", "Losange" });
+		final JComboBox<String> choixforme = new JComboBox<String>(new String[] { "Quadrilatère", "Triangle", "Rectangle", "Cercle", "Carré", "Losange", "Ellipse" });
 		choixforme.setFocusable(false);
 		choixforme.addItemListener(new ItemListener() {
 			@Override
@@ -118,6 +118,8 @@ public class PanneauChoix extends JPanel {
 			return new Carre();
 		case 5:
 			return new Losange();
+		case 6:
+			return new Ellipse();
 		default:
 			return null;
 		}

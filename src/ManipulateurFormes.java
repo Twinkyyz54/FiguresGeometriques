@@ -3,6 +3,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
+import javax.swing.SwingUtilities;
+
 public class ManipulateurFormes implements MouseListener, MouseMotionListener {
 
 	private DessinModele model;
@@ -15,7 +17,7 @@ public class ManipulateurFormes implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if(this.model != null && this.model.getType() == 2 && this.model.getFigureSelectionnee() != null) {
+		if(this.model != null && this.model.getType() == 2 && this.model.getFigureSelectionnee() != null && SwingUtilities.isLeftMouseButton(e)) {
 			FigureColoree fc = this.model.getFigureSelectionnee();
 			int x = e.getX();
 			int y = e.getY();
