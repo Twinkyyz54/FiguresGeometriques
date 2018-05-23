@@ -55,6 +55,14 @@ public class DessinModele extends Observable {
 			this.notifyObservers();
 		}
 	}
+	
+	public void changePoints(FigureColoree figure, Point[] points) {
+		if(figure != null && this.lfg.contains(figure)) {
+			figure.modifierPoints(points);
+			this.setChanged();
+			this.notifyObservers();
+		}
+	}
 
 	/**
 	 * Methode permettant de construire une nouvelle figure coloree a partir d'une instance de celle-ci
