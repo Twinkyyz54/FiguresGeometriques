@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Arrays;
 
 // Classe abstraite representant une figure coloree
 public abstract class FigureColoree {
@@ -96,7 +97,16 @@ public abstract class FigureColoree {
 			this.couleur = couleur;
 		}
 	}
-	
+
+	/**
+	 * Methode permettant de savoir si un des carre de selection de la figure est selectionne
+	 * 
+	 * @param x
+	 *            L'abscisse du point clique pour selectionner un carre de selection
+	 * @param y
+	 *            L'ordonnee du point clique pour selecitonner un carre de selection
+	 * @return L'indice du carre de selection selectionne ou -1 sinon il n'y en a pas
+	 */
 	public int carreDeSelection(int x, int y) {
 		if(tab_mem != null) {
 			for(int i = 0; i < tab_mem.length; i++) {
@@ -104,18 +114,29 @@ public abstract class FigureColoree {
 				if(p != null) {
 					if((p.rendreX() - x) * (p.rendreX() - x) + (p.rendreY() - y) * (p.rendreY() - y) <= PERIPHERIE_CARRE_SELECTION) {
 						return i;
-					}	
+					}
 				}
 			}
 		}
 		return -1;
 	}
-	
-	public void transformation(int dx, int dy, int numpoint) {
-		if(tab_mem != null && numpoint < tab_mem.length) {
-			Point p = tab_mem[numpoint];
+
+	/**
+	 * Methode permettant de transformer une figure (agrandissement...) a partir d'un carre de selection
+	 * 
+	 * @param dx
+	 *            Le deplacement en abscisse du carre de selection
+	 * @param dy
+	 *            Le deplacement en ordonnee du carre de selection
+	 * @param idxcarre
+	 *            L'indice du carre de selection deplacer
+	 */
+	public void transformation(int dx, int dy, int idxcarre) {
+		if(tab_mem != null && idxcarre < tab_mem.length && idxcarre >= 0) {
+			Point p = tab_mem[idxcarre];
 			if(p != null) {
 				p.translation(dx, dy);
+				this.modifierPoints(this.tab_mem);
 			}
 		}
 	}

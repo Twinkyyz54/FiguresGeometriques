@@ -15,7 +15,7 @@ public class TraceTrait implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if(this.model != null && this.model.getType() == 1) {
-			this.model.ajouteTrait(new Trait(this.model.getFigureEnCours().couleur, this.lastX, this.lastY, e.getX(), e.getY()));
+			this.model.ajouterTrait(new Trait(this.model.getFigureEnCours().couleur, this.lastX, this.lastY, e.getX(), e.getY()));
 			this.lastX = e.getX();
 			this.lastY = e.getY();
 		}

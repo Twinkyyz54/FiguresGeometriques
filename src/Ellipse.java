@@ -30,12 +30,12 @@ public class Ellipse extends FigureColoree {
 			Point p2 = points[1];
 			Point p3 = points[2];
 			if(p1 != null && p2 != null && p3 != null) {
-				int diffx = Math.abs(p2.rendreX() - p1.rendreX());
-				int diffy = Math.abs(p3.rendreY() - p1.rendreY());
+				int distx = Math.abs(p2.rendreX() - p1.rendreX());
+				int disty = Math.abs(p3.rendreY() - p1.rendreY());
 				tab_mem[0] = p1;
 				tab_mem[1] = new Point(p2.rendreX(), p1.rendreY());
 				tab_mem[2] = new Point(p1.rendreX(), p3.rendreY());
-				this.ellipse = new Ellipse2D.Double(p1.rendreX() - diffx, p3.rendreY(), 2*diffx, 2*diffy);
+				this.ellipse = new Ellipse2D.Double(p1.rendreX() - distx, p1.rendreY() - disty, 2*distx, 2*disty);
 			}
 		}
 	}
@@ -48,10 +48,10 @@ public class Ellipse extends FigureColoree {
 				Point p2 = tab_mem[1];
 				Point p3 = tab_mem[2];
 				if(p1 != null && p2 != null && p3 != null) {
-					int diffx = Math.abs(p2.rendreX() - p1.rendreX());
-					int diffy = Math.abs(p3.rendreY() - p1.rendreY());
+					int distx = Math.abs(p2.rendreX() - p1.rendreX());
+					int disty = Math.abs(p3.rendreY() - p1.rendreY());
 					g.setColor(this.couleur);
-					g.fillOval(p1.rendreX() - diffx, p3.rendreY(), 2*diffx, 2*diffy);
+					g.fillOval(p1.rendreX() - distx, p1.rendreY() - disty, 2*distx, 2*disty);
 				}
 			}
 		}

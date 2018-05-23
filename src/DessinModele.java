@@ -35,7 +35,7 @@ public class DessinModele extends Observable {
 	 * @param figure
 	 *            La figure a ajouter a la liste
 	 */
-	public void ajoute(FigureColoree figure) {
+	public void ajouter(FigureColoree figure) {
 		if(figure != null) {
 			this.lfg.add(figure);
 			this.setChanged();
@@ -51,7 +51,7 @@ public class DessinModele extends Observable {
 	 * @param couleur
 	 *            La nouvelle couleur de la figure
 	 */
-	public void changeCoul(FigureColoree figure, Color couleur) {
+	public void changerCouleur(FigureColoree figure, Color couleur) {
 		if(figure != null && this.lfg.contains(figure)) {
 			figure.changeCouleur(couleur);
 			this.setChanged();
@@ -59,7 +59,15 @@ public class DessinModele extends Observable {
 		}
 	}
 
-	public void changePoints(FigureColoree figure, Point[] points) {
+	/**
+	 * Methode permettant de changer les points d'une figure deja construite
+	 * 
+	 * @param figure
+	 *            La figure deja construite dont on veut changer les points
+	 * @param points
+	 *            Les nouveaux points de la figure
+	 */
+	public void changerPoints(FigureColoree figure, Point[] points) {
 		if(figure != null && this.lfg.contains(figure)) {
 			figure.modifierPoints(points);
 			this.setChanged();
@@ -76,7 +84,7 @@ public class DessinModele extends Observable {
 	public void construit(FigureColoree figure) {
 		this.figureEnCours = figure;
 		this.nbClic = 0;
-		this.points_Cliques = new Point[0];
+		this.points_Cliques = new Point[figure.nbClics()];
 	}
 
 	/**
@@ -87,29 +95,22 @@ public class DessinModele extends Observable {
 	 * @param y
 	 *            L'ordonnee du point a ajouter
 	 */
-	public void ajoutePt(int x, int y) {
+	public void ajouterPoint(int x, int y) {
 		if(this.figureEnCours != null) {
-			Point[] copie = new Point[this.nbClic + 1];
-			int i;
-			for(i = 0; i < this.nbClic; i++) {
-				copie[i] = this.points_Cliques[i];
-			}
-			copie[i] = new Point(x, y);
-			if(this.nbClic + 1 == this.figureEnCours.nbClics()) {
-				this.figureEnCours.modifierPoints(copie);
-				this.ajoute(this.figureEnCours);
-				this.points_Cliques = new Point[0];
-				this.nbClic = 0;
+			this.points_Cliques[this.nbClic++] = new Point(x, y);
+			if(this.nbClic == this.figureEnCours.nbClics()) {
+				this.figureEnCours.modifierPoints(this.points_Cliques);
+				this.ajouter(this.figureEnCours);
 				try {
 					FigureColoree nouvelle = this.figureEnCours.getClass().newInstance();
 					nouvelle.changeCouleur(this.figureEnCours.couleur);
 					this.figureEnCours = nouvelle;
+					this.points_Cliques = new Point[this.figureEnCours.nbClics()];
 				} catch(InstantiationException | IllegalAccessException e) {
 					this.figureEnCours = null;
+					this.points_Cliques = new Point[0];
 				}
-			} else {
-				this.points_Cliques = copie;
-				this.nbClic++;
+				this.nbClic = 0;
 			}
 		}
 	}
@@ -189,13 +190,16 @@ public class DessinModele extends Observable {
 		if(this.figureSelectionnee != null) {
 			this.figureSelectionnee.deSelectionne();
 		}
-		FigureColoree selection = null;
-		for(FigureColoree figure : lfg) {
-			if(figure.estDedans(x, y)) {
-				selection = figure;
+		this.figureSelectionnee = null;
+		int i = this.lfg.size() - 1;
+		while(i >= 0 && this.figureSelectionnee == null) {
+			FigureColoree figure = this.lfg.get(i);
+			if(figure != null && figure.estDedans(x, y)) {
+				this.figureSelectionnee = figure;
+			} else {
+				--i;
 			}
 		}
-		this.figureSelectionnee = selection;
 		if(this.figureSelectionnee != null) {
 			this.figureSelectionnee.selectionne();
 		}
@@ -243,10 +247,34 @@ public class DessinModele extends Observable {
 	public ArrayList<Trait> getTraits() {
 		return this.traits;
 	}
-	
-	public void ajouteTrait(Trait trait) {
+
+	/**
+	 * Methode permettant d'ajouter un traint a la liste des trait du dessin
+	 * 
+	 * @param trait
+	 *            Le nouveau trait a ajouter
+	 */
+	public void ajouterTrait(Trait trait) {
 		if(trait != null) {
 			this.traits.add(trait);
+			this.setChanged();
+			this.notifyObservers();
+		}
+	}
+
+	/**
+	 * Methode permettant de transformer une figure deja construite pour le dessin
+	 * 
+	 * @param dx
+	 *            Le deplacement horizontal du carre de selection modifie
+	 * @param dy
+	 *            Le deplacement vertical du carre de selection modifie
+	 * @param idxcarre
+	 *            L'indice du carre de selection deplace
+	 */
+	public void transformerFigureSelectionnee(int dx, int dy, int idxcarre) {
+		if(this.getFigureSelectionnee() != null) {
+			this.getFigureSelectionnee().transformation(dx, dy, idxcarre);
 			this.setChanged();
 			this.notifyObservers();
 		}

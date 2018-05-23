@@ -25,8 +25,11 @@ public class Cercle extends FigureColoree {
 	public boolean estDedans(int x, int y) {
 		if(tab_mem != null && tab_mem.length == this.nbClics()) {
 			Point centre = tab_mem[0];
-			double dist = centre.distance(tab_mem[1]);
-			return (x - centre.rendreX()) * (x - centre.rendreX()) + (y - centre.rendreY()) * (y - centre.rendreY()) <= (dist * dist);
+			Point perim = tab_mem[1];
+			if(centre != null && perim != null) {
+				double rayon = centre.distance(perim);
+				return (x - centre.rendreX()) * (x - centre.rendreX()) + (y - centre.rendreY()) * (y - centre.rendreY()) <= (rayon * rayon);
+			}
 		}
 		return false;
 	}

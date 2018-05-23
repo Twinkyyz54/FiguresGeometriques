@@ -17,7 +17,10 @@ public abstract class Polygone extends FigureColoree {
 
 	@Override
 	public boolean estDedans(int x, int y) {
-		return this.p.contains(x, y);
+		if(p != null) {
+			return this.p.contains(x, y);
+		}
+		return false;
 	}
 
 	@Override

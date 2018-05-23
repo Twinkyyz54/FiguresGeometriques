@@ -36,7 +36,7 @@ public class PanneauChoix extends JPanel {
 					PanneauChoix.this.dessin.getFigureEnCours().changeCouleur(PanneauChoix.this.determineCouleur(choixcouleur.getSelectedIndex()));
 				}
 				if(PanneauChoix.this.dessin.getType() == 2) {
-					PanneauChoix.this.dessin.changeCoul(PanneauChoix.this.dessin.getFigureSelectionnee(), PanneauChoix.this.determineCouleur(choixcouleur.getSelectedIndex()));
+					PanneauChoix.this.dessin.changerCouleur(PanneauChoix.this.dessin.getFigureSelectionnee(), PanneauChoix.this.determineCouleur(choixcouleur.getSelectedIndex()));
 				}
 			}
 		});

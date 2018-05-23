@@ -25,5 +25,20 @@ public class Rectangle extends Quadrilatere {
 			}
 		}
 	}
+	
+	@Override
+	public void transformation(int dx, int dy, int idxcarre) {
+		if(tab_mem != null && idxcarre < tab_mem.length && idxcarre >= 0) {
+			Point p1 = tab_mem[0];
+			Point p2 = tab_mem[2];
+			if(p1 != null && p2 != null) {
+				int indicex = ((idxcarre % 3) == 0) ? 0 : 2;
+				int indicey = (idxcarre < 2) ? 0 : 2;
+				tab_mem[indicex].incrementerX(dx);
+				tab_mem[indicey].incrementerY(dy);
+				this.modifierPoints(new Point[] { p1, p2 });
+			}
+		}
+	}
 
 }
