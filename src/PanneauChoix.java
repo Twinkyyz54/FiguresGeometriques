@@ -78,6 +78,7 @@ public class PanneauChoix extends JPanel {
 						choixcouleur.setEnabled(true);
 						PanneauChoix.this.dessin.changerType(2);
 					}
+					PanneauChoix.this.dessin.setNbClic(0);
 				}
 			}
 		};
