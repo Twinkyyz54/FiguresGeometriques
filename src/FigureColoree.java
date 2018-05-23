@@ -4,8 +4,10 @@ import java.awt.Graphics;
 // Classe abstraite representant une figure coloree
 public abstract class FigureColoree {
 
-	// Constante entiere correspondant a la taille d'un carre de selection d'une figure coloree
-	public final static int TAILLE_CARRE_SELECTION = 9;
+	// Constante statique entiere correspondant a la taille d'un carre de selection d'une figure coloree
+	private final static int TAILLE_CARRE_SELECTION = 7;
+	// Constante statique entiere correspondant a la peripherie du carre de selection d'une figure coloree
+	private final static int PERIPHERIE_CARRE_SELECTION = 5;
 	// Tableau de point correspondants au points de memorisation de la figure coloree
 	protected Point[] tab_mem;
 	// Booleen indiquant si la figure coloree est selectionnee ou non
@@ -92,6 +94,29 @@ public abstract class FigureColoree {
 	public void changeCouleur(Color couleur) {
 		if(couleur != null) {
 			this.couleur = couleur;
+		}
+	}
+	
+	public int carreDeSelection(int x, int y) {
+		if(tab_mem != null) {
+			for(int i = 0; i < tab_mem.length; i++) {
+				Point p = tab_mem[i];
+				if(p != null) {
+					if((p.rendreX() - x) * (p.rendreX() - x) + (p.rendreY() - y) * (p.rendreY() - y) <= PERIPHERIE_CARRE_SELECTION) {
+						return i;
+					}	
+				}
+			}
+		}
+		return -1;
+	}
+	
+	public void transformation(int dx, int dy, int numpoint) {
+		if(tab_mem != null && numpoint < tab_mem.length) {
+			Point p = tab_mem[numpoint];
+			if(p != null) {
+				p.translation(dx, dy);
+			}
 		}
 	}
 }
