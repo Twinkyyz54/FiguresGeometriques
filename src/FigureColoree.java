@@ -112,7 +112,7 @@ public abstract class FigureColoree {
 			for(int i = 0; i < tab_mem.length; i++) {
 				Point p = tab_mem[i];
 				if(p != null) {
-					if((p.rendreX() - x) * (p.rendreX() - x) + (p.rendreY() - y) * (p.rendreY() - y) <= PERIPHERIE_CARRE_SELECTION) {
+					if(Math.abs(p.rendreX() - x) <= PERIPHERIE_CARRE_SELECTION && Math.abs(p.rendreY() - y) <= PERIPHERIE_CARRE_SELECTION) {
 						return i;
 					}
 				}
