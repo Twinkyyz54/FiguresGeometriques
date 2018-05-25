@@ -1,6 +1,7 @@
+package modele;
+
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.Arrays;
 
 // Classe abstraite representant une figure coloree
 public abstract class FigureColoree {
@@ -139,5 +140,23 @@ public abstract class FigureColoree {
 				this.modifierPoints(this.tab_mem);
 			}
 		}
+	}
+
+	/**
+	 * Methode accesseur permettant de recuperer la couleur de la figure coloree
+	 * 
+	 * @return La couleur de la figure coloree
+	 */
+	public Color getCouleur() {
+		return this.couleur;
+	}
+
+	/**
+	 * Methode accesseur permettant de recuperer le tableau des points de memorisation de la figure
+	 * 
+	 * @return Le tableau des points de memorisation de la figure coloree
+	 */
+	public Point[] getTabMem() {
+		return this.tab_mem;
 	}
 }

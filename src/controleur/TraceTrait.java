@@ -1,6 +1,10 @@
+package controleur;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
+import modele.DessinModele;
+import modele.Trait;
 
 public class TraceTrait implements MouseListener, MouseMotionListener {
 	
@@ -15,7 +19,7 @@ public class TraceTrait implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if(this.model != null && this.model.getType() == 1) {
-			this.model.ajouterTrait(new Trait(this.model.getFigureEnCours().couleur, this.lastX, this.lastY, e.getX(), e.getY()));
+			this.model.ajouterTrait(new Trait(this.model.getFigureEnCours().getCouleur(), this.lastX, this.lastY, e.getX(), e.getY()));
 			this.lastX = e.getX();
 			this.lastY = e.getY();
 		}

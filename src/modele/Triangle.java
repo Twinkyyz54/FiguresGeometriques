@@ -1,3 +1,4 @@
+package modele;
 // Classe representant une figure coloree de type triangle
 public class Triangle extends Polygone {
 	@Override

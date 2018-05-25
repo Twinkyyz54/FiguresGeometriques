@@ -1,3 +1,4 @@
+package modele;
 
 // Classe representant une figure coloree de type quadrilatere
 public class Quadrilatere extends Polygone {

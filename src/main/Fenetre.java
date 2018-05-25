@@ -1,8 +1,16 @@
+package main;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import controleur.FabricantFigures;
+import controleur.ManipulateurFormes;
+import controleur.PanneauChoix;
+import controleur.TraceTrait;
+import modele.DessinModele;
+import vue.VueDessin;
 
 // Classe representant la fenetre
 public class Fenetre {

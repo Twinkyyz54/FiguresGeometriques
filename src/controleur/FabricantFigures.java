@@ -1,5 +1,8 @@
+package controleur;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
+import modele.DessinModele;
 
 // Classe controleur pour la fabrication des figures
 public class FabricantFigures implements MouseListener {

@@ -1,3 +1,4 @@
+package controleur;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -9,6 +10,16 @@ import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+
+import modele.Carre;
+import modele.Cercle;
+import modele.DessinModele;
+import modele.Ellipse;
+import modele.FigureColoree;
+import modele.Losange;
+import modele.Quadrilatere;
+import modele.Rectangle;
+import modele.Triangle;
 
 // Classe representant le panel de boutons permettant a l'utilisateur de choisir le type de dessin a effectuer
 public class PanneauChoix extends JPanel {

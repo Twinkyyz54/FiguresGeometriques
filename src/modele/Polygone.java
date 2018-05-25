@@ -1,3 +1,4 @@
+package modele;
 import java.awt.Graphics;
 import java.awt.Polygon;
 

@@ -1,3 +1,4 @@
+package vue;
 import java.awt.Graphics;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -6,6 +7,10 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JPanel;
+
+import modele.DessinModele;
+import modele.FigureColoree;
+import modele.Trait;
 
 // Classe representant le panel destine a afficher les dessins de l'utilisateur
 public class VueDessin extends JPanel implements Observer {

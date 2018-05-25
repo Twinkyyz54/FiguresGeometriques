@@ -1,3 +1,4 @@
+package modele;
 // Classe representant un point dans un espace a deux dimensions
 public class Point {
 

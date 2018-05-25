@@ -1,9 +1,14 @@
+package controleur;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
+
+import modele.DessinModele;
+import modele.FigureColoree;
+import modele.Point;
 
 public class ManipulateurFormes implements MouseListener, MouseMotionListener {
 
@@ -34,12 +39,13 @@ public class ManipulateurFormes implements MouseListener, MouseMotionListener {
 				FigureColoree fc = this.model.getFigureSelectionnee();
 				int x = e.getX();
 				int y = e.getY();
-				if(fc.tab_mem != null && fc.tab_mem.length > 0) {
+				Point[] tab_mem = fc.getTabMem();
+				if(tab_mem != null && tab_mem.length > 0) {
 					int dx = x - this.lastX;
 					int dy = y - this.lastY;
-					Point[] nouveaux = new Point[fc.tab_mem.length];
+					Point[] nouveaux = new Point[tab_mem.length];
 					for(int i = 0; i < nouveaux.length; i++) {
-						Point ancien = fc.tab_mem[i];
+						Point ancien = tab_mem[i];
 						nouveaux[i] = new Point(dx + ancien.rendreX(), dy + ancien.rendreY());
 					}
 					this.model.changerPoints(fc, nouveaux);
