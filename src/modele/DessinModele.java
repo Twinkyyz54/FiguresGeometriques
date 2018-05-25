@@ -1,7 +1,10 @@
 package modele;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Observable;
+
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 // Classe representant un modele de dessin pour creer et modifier des figures colorees
 public class DessinModele extends Observable {
@@ -276,6 +279,20 @@ public class DessinModele extends Observable {
 	public void transformerFigureSelectionnee(int dx, int dy, int idxcarre) {
 		if(this.getFigureSelectionnee() != null) {
 			this.getFigureSelectionnee().transformation(dx, dy, idxcarre);
+			this.setChanged();
+			this.notifyObservers();
+		}
+	}
+
+	/**
+	 * Methode permettant de redefinir la liste des traits construits pour le dessin
+	 * 
+	 * @param traits
+	 *            La nouvelle liste de traits du dessin
+	 */
+	public void setTraits(ArrayList<Trait> traits) {
+		if(traits != null) {
+			this.traits = traits;
 			this.setChanged();
 			this.notifyObservers();
 		}

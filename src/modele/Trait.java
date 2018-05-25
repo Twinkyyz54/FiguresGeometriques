@@ -1,8 +1,9 @@
 package modele;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 
-public class Trait {
+public class Trait implements Serializable {
 	
 	private Color couleur;
 	private int x1;

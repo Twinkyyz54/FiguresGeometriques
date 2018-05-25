@@ -1,7 +1,7 @@
 package vue;
+import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -19,6 +19,11 @@ public class VueDessin extends JPanel implements Observer {
 	private ArrayList<FigureColoree> lfg;
 	// Liste des traits colorees a dessiner sur le panel
 	private ArrayList<Trait> traits;
+	
+	public VueDessin() {
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setPreferredSize(new Dimension((int) screen.getWidth(), (int) screen.getHeight()));
+	}
 
 	@Override
 	public void update(Observable o, Object arg) {

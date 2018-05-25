@@ -1,6 +1,9 @@
 package modele;
+
+import java.io.Serializable;
+
 // Classe representant un point dans un espace a deux dimensions
-public class Point {
+public class Point implements Serializable {
 
 	// Abscisse du point
 	private int x;

@@ -2,9 +2,10 @@ package modele;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 
 // Classe abstraite representant une figure coloree
-public abstract class FigureColoree {
+public abstract class FigureColoree implements Serializable {
 
 	// Constante statique entiere correspondant a la taille d'un carre de selection d'une figure coloree
 	private final static int TAILLE_CARRE_SELECTION = 7;
