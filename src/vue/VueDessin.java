@@ -20,11 +20,6 @@ public class VueDessin extends JPanel implements Observer {
 	private ArrayList<FigureColoree> lfg;
 	// Liste des traits colorees a dessiner sur le panel
 	private ArrayList<Trait> traits;
-	
-	public VueDessin() {
-		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setPreferredSize(new Dimension((int) screen.getWidth(), (int) screen.getHeight()));
-	}
 
 	@Override
 	public void update(Observable o, Object arg) {
