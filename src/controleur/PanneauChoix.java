@@ -86,20 +86,27 @@ public class PanneauChoix extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() instanceof JRadioButton) {
+					// On recupere le radio button et on le selectionne tandit qu'on deselectionne les autres
 					JRadioButton radiobutton = (JRadioButton) e.getSource();
 					group.clearSelection();
 					radiobutton.setSelected(true);
-					for(FigureColoree fc : PanneauChoix.this.dessin.getLfg()) {
-						fc.deSelectionne();
+					// On deselectionne la figure selectionnee dans le modele
+					FigureColoree selectionnee = PanneauChoix.this.dessin.getFigureSelectionnee();
+					if(selectionnee != null) {
+						selectionnee.deSelectionne();
+						PanneauChoix.this.dessin.setFigureSelectionnee(null);
 					}
+					// Si on appui sur le bouton pour la construction d'une nouvelle figure
 					if(radiobutton.getText().equals("Nouvelle figure")) {
 						choixforme.setEnabled(true);
 						choixcouleur.setEnabled(true);
 						PanneauChoix.this.dessin.changerType(0);
+						// Si on appui sur le bouton pour tracer des traits
 					} else if(radiobutton.getText().equals("Tracé à main levée")) {
 						choixforme.setEnabled(false);
 						choixcouleur.setEnabled(true);
 						PanneauChoix.this.dessin.changerType(1);
+						// Sinon alors on passe en mode manipulation
 					} else {
 						choixforme.setEnabled(false);
 						choixcouleur.setEnabled(true);
@@ -119,7 +126,7 @@ public class PanneauChoix extends JPanel {
 				radiobutton.setSelected(true);
 			}
 		}
-		// On ajoute les boutons et les jcombobox au panneauchoix
+		// On ajoute le panel boutons et le panel du choix de mode au panneau choix
 		this.add(panelboutons);
 		this.add(panelcombobox);
 		// Et on construit une quadrilatere de base

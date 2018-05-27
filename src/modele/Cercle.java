@@ -1,9 +1,10 @@
 package modele;
+
 import java.awt.Graphics;
 
 // Classe representant une figure coloree de type cercle
 public class Cercle extends FigureColoree {
-	
+
 	@Override
 	public int nbPoints() {
 		return 2;
@@ -34,7 +35,7 @@ public class Cercle extends FigureColoree {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void affiche(Graphics g) {
 		if(tab_mem != null && tab_mem.length == this.nbPoints()) {

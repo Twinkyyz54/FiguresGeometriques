@@ -1,13 +1,12 @@
 package modele;
 
 public class Carre extends Quadrilatere {
-	
+
 	@Override
 	public int nbClics() {
 		return 2;
 	}
 
-	
 	@Override
 	public void modifierPoints(Point[] points) {
 		if(points != null) {
@@ -29,7 +28,7 @@ public class Carre extends Quadrilatere {
 			}
 		}
 	}
-	
+
 	@Override
 	public void transformation(int dx, int dy, int idxcarre) {
 		if(tab_mem != null && idxcarre < tab_mem.length && idxcarre >= 0) {

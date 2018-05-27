@@ -6,7 +6,7 @@ public class Losange extends Quadrilatere {
 	public int nbClics() {
 		return 2;
 	}
-	
+
 	@Override
 	public void modifierPoints(Point[] points) {
 		if(points != null) {
@@ -28,5 +28,4 @@ public class Losange extends Quadrilatere {
 			}
 		}
 	}
-	
 }

@@ -1,7 +1,7 @@
 package vue;
+
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -23,31 +23,39 @@ public class VueDessin extends JPanel implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
+		// Si l'objet observable est bien un modele
 		if(o instanceof DessinModele) {
+			// On recupere les constructions de ce modele et on redessine la vue dessin
 			DessinModele dessin = (DessinModele) o;
 			this.lfg = dessin.getLfg();
 			this.traits = dessin.getTraits();
 			this.repaint();
+			this.revalidate();
 		}
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		if(lfg != null) {
-			for(Trait trait : traits) {
+		// Si il y a des traits on les affichent
+		if(this.traits != null) {
+			for(Trait trait : this.traits) {
 				trait.affiche(g);
 			}
-			for(FigureColoree figure : lfg) {
+		}
+		// Si il y a des figures, on les affichent
+		if(this.lfg != null) {
+			for(FigureColoree figure : this.lfg) {
 				figure.affiche(g);
 			}
 		}
 	}
-	
+
 	@Override
 	public Dimension getPreferredSize() {
 		int maxX = 0;
 		int maxY = 0;
+		// On retourne la position de la plus grande abscisse et ordonnee parmis les figures et traits
 		if(this.lfg != null) {
 			for(FigureColoree fc : this.lfg) {
 				for(Point p : fc.getTabMem()) {

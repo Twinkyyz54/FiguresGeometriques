@@ -297,4 +297,14 @@ public class DessinModele extends Observable {
 			this.notifyObservers();
 		}
 	}
+
+	/**
+	 * Methode permettant de redefinir la figure selectionnee du dessin
+	 * 
+	 * @param figureSelectionnee
+	 *            La nouvelle figure selectionnee
+	 */
+	public void setFigureSelectionnee(FigureColoree figureSelectionnee) {
+		this.figureSelectionnee = figureSelectionnee;
+	}
 }
