@@ -1,4 +1,5 @@
 package controleur;
+
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -7,6 +8,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -35,34 +38,47 @@ public class PanneauChoix extends JPanel {
 	 */
 	public PanneauChoix(DessinModele dessin) {
 		this.dessin = dessin;
+		// On dessine le panneau choix sous forme d'une grille de 2 par 1 (ligne x colonne)
 		this.setLayout(new GridLayout(2, 1));
 		JPanel panelcombobox = new JPanel();
-		final JComboBox<String> choixcouleur = new JComboBox<String>(
-				new String[] { "Noir", "Bleu", "Cyan", "Gris foncé", "Gris", "Vert", "Gris clair", "Violet", "Orange", "Rose", "Rouge", "Blanc", "Jaune" });
+		// On ajoute le choix des couleurs
+		final JButton choixcouleur = new JButton("Choix couleur");
 		choixcouleur.setFocusable(false);
-		choixcouleur.addItemListener(new ItemListener() {
+		choixcouleur.addActionListener(new ActionListener() {
 			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if(PanneauChoix.this.dessin.getFigureEnCours() != null) {
-					PanneauChoix.this.dessin.getFigureEnCours().changeCouleur(PanneauChoix.this.determineCouleur(choixcouleur.getSelectedIndex()));
-				}
-				if(PanneauChoix.this.dessin.getType() == 2) {
-					PanneauChoix.this.dessin.changerCouleur(PanneauChoix.this.dessin.getFigureSelectionnee(), PanneauChoix.this.determineCouleur(choixcouleur.getSelectedIndex()));
+			public void actionPerformed(ActionEvent e) {
+				Color c = JColorChooser.showDialog(PanneauChoix.this.getParent(), "Choix de la couleur des figures", Color.BLACK);
+				// Si l'utilisateur a choisi une couleur
+				if(c != null) {
+					if(PanneauChoix.this.dessin.getFigureEnCours() != null) {
+						PanneauChoix.this.dessin.getFigureEnCours().changeCouleur(c);
+					}
+					// Si on est en mode de manipulation on change aussi la couleur de la figure selectionnee si il y en a une
+					if(PanneauChoix.this.dessin.getType() == 2) {
+						PanneauChoix.this.dessin.changerCouleur(PanneauChoix.this.dessin.getFigureSelectionnee(), c);
+					}
 				}
 			}
 		});
+		// On a ajoute le choix des formesdes figures
 		final JComboBox<String> choixforme = new JComboBox<String>(new String[] { "Quadrilatère", "Triangle", "Rectangle", "Cercle", "Carré", "Losange", "Ellipse" });
 		choixforme.setFocusable(false);
 		choixforme.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
+				// On construit la figure et on lui applique la couleur de la figure precedemment en construction
 				FigureColoree fc = PanneauChoix.this.creeFigure(choixforme.getSelectedIndex());
-				fc.changeCouleur(PanneauChoix.this.determineCouleur(choixcouleur.getSelectedIndex()));
+				FigureColoree ancienne = PanneauChoix.this.dessin.getFigureEnCours();
+				if(ancienne != null) {
+					fc.changeCouleur(ancienne.getCouleur());
+				}
 				PanneauChoix.this.dessin.construit(fc);
 			}
 		});
+		// On ajoute les deux combobox
 		panelcombobox.add(choixforme);
 		panelcombobox.add(choixcouleur);
+		// On creer les boutons du choix du mode et on leur ajoute le listener associe
 		JPanel panelboutons = new JPanel();
 		String[] names = { "Nouvelle figure", "Tracé à main levée", "Manipulations" };
 		final ButtonGroup group = new ButtonGroup();
@@ -103,8 +119,10 @@ public class PanneauChoix extends JPanel {
 				radiobutton.setSelected(true);
 			}
 		}
+		// On ajoute les boutons et les jcombobox au panneauchoix
 		this.add(panelboutons);
 		this.add(panelcombobox);
+		// Et on construit une quadrilatere de base
 		this.dessin.construit(new Quadrilatere());
 	}
 
@@ -116,6 +134,7 @@ public class PanneauChoix extends JPanel {
 	 * @return Une nouvelle instance de figure coloree
 	 */
 	private FigureColoree creeFigure(int index) {
+		// On instancie une nouvelle figure en fonction de l'indice selectionne
 		switch(index) {
 		case 0:
 			return new Quadrilatere();
@@ -131,46 +150,6 @@ public class PanneauChoix extends JPanel {
 			return new Losange();
 		case 6:
 			return new Ellipse();
-		default:
-			return null;
-		}
-	}
-
-	/**
-	 * Methode permettant de retourner une instance de couleur en fonction d'un indice
-	 * 
-	 * @param index
-	 *            L'indice de la couleur a instancier et retourner
-	 * @return L'instance de la couleur
-	 */
-	private Color determineCouleur(int index) {
-		switch(index) {
-		case 0:
-			return Color.BLACK;
-		case 1:
-			return Color.BLUE;
-		case 2:
-			return Color.CYAN;
-		case 3:
-			return Color.DARK_GRAY;
-		case 4:
-			return Color.GRAY;
-		case 5:
-			return Color.GREEN;
-		case 6:
-			return Color.LIGHT_GRAY;
-		case 7:
-			return Color.MAGENTA;
-		case 8:
-			return Color.ORANGE;
-		case 9:
-			return Color.PINK;
-		case 10:
-			return Color.RED;
-		case 11:
-			return Color.WHITE;
-		case 12:
-			return Color.YELLOW;
 		default:
 			return null;
 		}
