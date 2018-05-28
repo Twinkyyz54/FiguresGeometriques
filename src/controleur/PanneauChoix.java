@@ -9,10 +9,13 @@ import java.awt.event.ItemListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import modele.Carre;
 import modele.Cercle;
@@ -60,7 +63,7 @@ public class PanneauChoix extends JPanel {
 				}
 			}
 		});
-		// On a ajoute le choix des formesdes figures
+		// On ajoute le choix des formes des figures
 		final JComboBox<String> choixforme = new JComboBox<String>(new String[] { "Quadrilatère", "Triangle", "Rectangle", "Cercle", "Carré", "Losange", "Ellipse" });
 		choixforme.setFocusable(false);
 		choixforme.addItemListener(new ItemListener() {
@@ -75,7 +78,22 @@ public class PanneauChoix extends JPanel {
 				PanneauChoix.this.dessin.construit(fc);
 			}
 		});
-		// On ajoute les deux combobox
+		// On ajoute le choix de figure pleine ou non
+		final JCheckBox choixpleine = new JCheckBox("Figure pleine");
+		choixpleine.setFocusable(false);
+		choixpleine.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if(PanneauChoix.this.dessin.getFigureEnCours() != null) {
+					PanneauChoix.this.dessin.getFigureEnCours().mettrePleine(choixpleine.isSelected());
+				}
+				if(PanneauChoix.this.dessin.getType() == 2) {
+					PanneauChoix.this.dessin.mettrePleine(PanneauChoix.this.dessin.getFigureSelectionnee(), choixpleine.isSelected());
+				}
+			}
+		});
+		// On ajoute les choix
+		panelcombobox.add(choixpleine);
 		panelcombobox.add(choixforme);
 		panelcombobox.add(choixcouleur);
 		// On creer les boutons du choix du mode et on leur ajoute le listener associe

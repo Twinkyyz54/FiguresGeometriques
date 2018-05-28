@@ -108,6 +108,7 @@ public class DessinModele extends Observable {
 				try {
 					FigureColoree nouvelle = this.figureEnCours.getClass().newInstance();
 					nouvelle.changeCouleur(this.figureEnCours.couleur);
+					nouvelle.mettrePleine(this.figureEnCours.pleine);
 					this.figureEnCours = nouvelle;
 					this.points_Cliques = new Point[this.figureEnCours.nbClics()];
 				} catch(InstantiationException | IllegalAccessException e) {
@@ -306,5 +307,21 @@ public class DessinModele extends Observable {
 	 */
 	public void setFigureSelectionnee(FigureColoree figureSelectionnee) {
 		this.figureSelectionnee = figureSelectionnee;
+	}
+
+	/**
+	 * Methode permettant de mettre un figure appartenant au modele en pleine ou non
+	 * 
+	 * @param fc
+	 *            La figure dont on veut changer le fait qu'elle soit pleine ou non
+	 * @param pleine
+	 *            Boolean indiquant si la figure doit etre pleine ou non
+	 */
+	public void mettrePleine(FigureColoree fc, boolean pleine) {
+		if(fc != null && this.lfg.contains(fc)) {
+			fc.mettrePleine(pleine);
+			this.setChanged();
+			this.notifyObservers();
+		}
 	}
 }

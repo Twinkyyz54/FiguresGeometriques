@@ -17,6 +17,8 @@ public abstract class FigureColoree implements Serializable {
 	private boolean selected;
 	// Couleur correspondant a la couleur de la figure coloree
 	protected Color couleur;
+	// Booleen indiquant si la figure coloree est plein ou non
+	protected boolean pleine;
 
 	/**
 	 * Constructeur d'une figure coloree
@@ -159,5 +161,24 @@ public abstract class FigureColoree implements Serializable {
 	 */
 	public Point[] getTabMem() {
 		return this.tab_mem;
+	}
+
+	/**
+	 * Methode permettant de redefinir le fait que la figure soit pleine ou non
+	 * 
+	 * @param pleine
+	 *            Booleen indiquant si la figure devient pleine ou non
+	 */
+	public void mettrePleine(boolean pleine) {
+		this.pleine = pleine;
+	}
+
+	/**
+	 * Methode accesseur permettant de savoir si la figure est pleine ou non
+	 * 
+	 * @return Vrai si la figure est pleine, faux sinon
+	 */
+	public boolean estPleine() {
+		return this.pleine;
 	}
 }
