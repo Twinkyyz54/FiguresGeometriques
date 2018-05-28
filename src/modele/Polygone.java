@@ -1,7 +1,11 @@
 package modele;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Shape;
+import java.awt.Stroke;
 
 // Classe asbtraite representant une figure coloree de type polygone
 public abstract class Polygone extends FigureColoree {
@@ -35,6 +39,8 @@ public abstract class Polygone extends FigureColoree {
 			if(this.pleine) {
 				g.fillPolygon(this.p);
 			} else {
+				Graphics2D g2d = (Graphics2D) g;
+				g2d.setStroke(new BasicStroke(4));
 				g.drawPolygon(this.p);
 			}
 

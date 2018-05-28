@@ -35,10 +35,9 @@ public class Carre extends Quadrilatere {
 			Point p1 = tab_mem[0];
 			Point p2 = tab_mem[1];
 			if(p1 != null && p2 != null) {
-				int indicex = ((idxcarre % 3) == 0) ? 0 : 1;
-				int indicey = (idxcarre < 2) ? 0 : 1;
-				tab_mem[indicex].incrementerX(dx);
-				tab_mem[indicey].incrementerY(dy);
+				Point modif = (idxcarre % 3) == 0 ? p1 : p2;
+				modif.incrementerX(dx);
+				modif.incrementerY(dy);
 				this.modifierPoints(new Point[] { p1, p2 });
 			}
 		}
