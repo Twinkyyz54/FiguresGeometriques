@@ -43,7 +43,6 @@ public abstract class Polygone extends FigureColoree {
 				g2d.setStroke(new BasicStroke(4));
 				g.drawPolygon(this.p);
 			}
-
 		}
 		super.affiche(g);
 	}

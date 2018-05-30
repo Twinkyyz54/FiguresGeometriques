@@ -1,6 +1,8 @@
 package modele;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 
 public class Ellipse extends FigureColoree {
@@ -53,7 +55,13 @@ public class Ellipse extends FigureColoree {
 					int distx = Math.abs(p2.rendreX() - p1.rendreX());
 					int disty = Math.abs(p3.rendreY() - p1.rendreY());
 					g.setColor(this.couleur);
-					g.fillOval(p1.rendreX() - distx, p1.rendreY() - disty, 2 * distx, 2 * disty);
+					if(this.pleine) {
+						g.fillOval(p1.rendreX() - distx, p1.rendreY() - disty, 2 * distx, 2 * disty);
+					} else {
+						Graphics2D g2d = (Graphics2D) g;
+						g2d.setStroke(new BasicStroke(4));
+						g.drawOval(p1.rendreX() - distx, p1.rendreY() - disty, 2 * distx, 2 * disty);
+					}
 				}
 			}
 		}

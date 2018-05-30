@@ -1,6 +1,8 @@
 package modele;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 // Classe representant une figure coloree de type cercle
 public class Cercle extends FigureColoree {
@@ -42,7 +44,13 @@ public class Cercle extends FigureColoree {
 			Point centre = tab_mem[0];
 			int dist = (int) Math.round(centre.distance(tab_mem[1]));
 			g.setColor(this.couleur);
-			g.fillOval(centre.rendreX() - dist, centre.rendreY() - dist, dist * 2, dist * 2);
+			if(this.pleine) {
+				g.fillOval(centre.rendreX() - dist, centre.rendreY() - dist, dist * 2, dist * 2);
+			} else {
+				Graphics2D g2d = (Graphics2D) g;
+				g2d.setStroke(new BasicStroke(4));
+				g.drawOval(centre.rendreX() - dist, centre.rendreY() - dist, dist * 2, dist * 2);
+			}
 		}
 		super.affiche(g);
 	}
