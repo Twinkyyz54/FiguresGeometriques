@@ -38,6 +38,13 @@ public class Carre extends Quadrilatere {
 				Point modif = (idxcarre % 3) == 0 ? p1 : p2;
 				modif.incrementerX(dx);
 				modif.incrementerY(dy);
+				if(idxcarre > 1) {
+					int direction = (idxcarre & 1) == 0 ? 1 : -1;
+					p1.incrementerX(direction * -dy);
+					p2.incrementerX(direction * -dy);
+					p1.incrementerY(direction * dx);
+					p2.incrementerY(direction * dx);
+				}
 				this.modifierPoints(new Point[] { p1, p2 });
 			}
 		}
