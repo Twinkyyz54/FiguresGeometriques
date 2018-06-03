@@ -40,7 +40,7 @@ public class Fenetre {
 	// Attribut correspondant au modele de dessin pour creer des figures
 	private DessinModele model;
 	// Attribut correspondant au panel de dessin de la fenetre
-	private VueDessin dessin;
+	private VueDessin vue;
 
 	/**
 	 * Methode lancee au demarrage du programme
@@ -173,23 +173,17 @@ public class Fenetre {
 		panel.setLayout(new BorderLayout());
 		// On instancie un dessin modele pour les controleurs
 		this.model = new DessinModele();
-		// On ajoute le panneau choix
-		panel.add(new PanneauChoix(this.model), BorderLayout.NORTH);
-		// On ajoute les controleurs a la vue dessin
-		this.dessin = new VueDessin();
-		this.dessin.addMouseListener(new FabricantFigures(this.model));
-		TraceTrait tt = new TraceTrait(this.model);
-		this.dessin.addMouseListener(tt);
-		this.dessin.addMouseMotionListener(tt);
-		ManipulateurFormes mf = new ManipulateurFormes(this.model);
-		this.dessin.addMouseListener(mf);
-		this.dessin.addMouseMotionListener(mf);
+		// On ajoute le controleur a la vue dessin pour la fabrication de figures
+		this.vue = new VueDessin();
+		this.vue.addMouseListener(new FabricantFigures(this.model));
 		// On defini la vue dessin comme etant un observer de notre modele de dessin
-		this.model.addObserver(this.dessin);
+		this.model.addObserver(this.vue);
 		// On defini un scrollpane pour la vue dessin
-		JScrollPane scrollpane = new JScrollPane(this.dessin, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		// On ajoute le scrollpane avec la vue dessin
+		JScrollPane scrollpane = new JScrollPane(this.vue, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		// On ajoute le scrollpane avec la vue dessin et le panneau choix
+		panel.add(new PanneauChoix(this.model, this.vue), BorderLayout.NORTH);
 		panel.add(scrollpane, BorderLayout.CENTER);
+		panel.setPreferredSize(new Dimension(600, 600));
 		frame.setContentPane(panel);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
@@ -257,11 +251,11 @@ public class Fenetre {
 		// Si le chemin du fichier n'est pas null
 		if(urlfichier != null) {
 			// On creer un image coloree de la taille de la vue dessin
-			BufferedImage image = new BufferedImage(this.dessin.getWidth(), this.dessin.getHeight(), BufferedImage.TYPE_INT_RGB);
+			BufferedImage image = new BufferedImage(this.vue.getWidth(), this.vue.getHeight(), BufferedImage.TYPE_INT_RGB);
 			// On recupere un graphique de l'image
 			Graphics g = image.createGraphics();
 			// On affiche le dessin de vue dessin sur le graphique
-			this.dessin.paint(g);
+			this.vue.paint(g);
 			// On libere les ressources qui ne sont plus utiles du graphique
 			g.dispose();
 			// On tente de creer le fichier correspond a l'image au format png

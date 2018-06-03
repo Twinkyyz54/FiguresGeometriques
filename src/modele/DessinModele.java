@@ -307,6 +307,8 @@ public class DessinModele extends Observable {
 	 */
 	public void setFigureSelectionnee(FigureColoree figureSelectionnee) {
 		this.figureSelectionnee = figureSelectionnee;
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 	/**
@@ -320,6 +322,22 @@ public class DessinModele extends Observable {
 	public void mettrePleine(FigureColoree fc, boolean pleine) {
 		if(fc != null && this.lfg.contains(fc)) {
 			fc.mettrePleine(pleine);
+			this.setChanged();
+			this.notifyObservers();
+		}
+	}
+
+	/**
+	 * Methode permettant de changer l'epaisseur du contour d'une figure du modele
+	 * 
+	 * @param fc
+	 *            La figure dont on veut changer l'epaisseur du contour
+	 * @param epaisseur
+	 *            La nouvelle epaisseur du contour
+	 */
+	public void changerEpaisseur(FigureColoree fc, int epaisseur) {
+		if(fc != null && this.lfg.contains(fc)) {
+			fc.changerEpaisseur(epaisseur);
 			this.setChanged();
 			this.notifyObservers();
 		}

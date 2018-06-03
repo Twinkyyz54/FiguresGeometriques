@@ -31,10 +31,10 @@ public class TraceTrait implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// Si il y a un modele pour la construction du trait, qu'il est en mode trace de traits et que le bouton de la souris clique est le clic gauche
-		if(this.model != null && this.model.getType() == 1 && SwingUtilities.isLeftMouseButton(e)) {
+		// Si il y a un modele pour la construction du trait et que le bouton de la souris clique est le clic gauche
+		if(this.model != null && SwingUtilities.isLeftMouseButton(e)) {
 			// Alors on ajoute un trait au modele entre la derniere position de la souris et l'actuelle avec la couleur de la figure en cours
-			this.model.ajouterTrait(new Trait(this.model.getFigureEnCours().getCouleur(), this.lastX, this.lastY, e.getX(), e.getY()));
+			this.model.ajouterTrait(new Trait(this.model.getFigureEnCours().getCouleur(), this.lastX, this.lastY, e.getX(), e.getY(), this.model.getFigureEnCours().getEpaisseur()));
 			// On redefini la position precedente de la souris avec l'actuelle
 			this.lastX = e.getX();
 			this.lastY = e.getY();
@@ -53,8 +53,8 @@ public class TraceTrait implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// Si il y a un modele pour la construction du trait et qu'il est en mode trace de traits
-		if(this.model != null && this.model.getType() == 1) {
+		// Si il y a un modele pour la construction du trait
+		if(this.model != null) {
 			int button = e.getButton();
 			// Si le bouton clique est le clic gauche
 			if(button == MouseEvent.BUTTON1) {

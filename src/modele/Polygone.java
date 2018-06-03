@@ -40,7 +40,7 @@ public abstract class Polygone extends FigureColoree {
 				g.fillPolygon(this.p);
 			} else {
 				Graphics2D g2d = (Graphics2D) g;
-				g2d.setStroke(new BasicStroke(4));
+				g2d.setStroke(new BasicStroke(this.epaisseur));
 				g.drawPolygon(this.p);
 			}
 		}

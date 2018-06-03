@@ -19,13 +19,16 @@ public abstract class FigureColoree implements Serializable {
 	protected Color couleur;
 	// Booleen indiquant si la figure coloree est plein ou non
 	protected boolean pleine;
+	// Entier correspondant a l'epaisseur des contours de la figure
+	protected int epaisseur;
 
 	/**
 	 * Constructeur d'une figure coloree
 	 */
 	public FigureColoree() {
-		tab_mem = new Point[this.nbPoints()];
-		couleur = Color.BLACK;
+		this.tab_mem = new Point[this.nbPoints()];
+		this.couleur = Color.BLACK;
+		this.epaisseur = 2;
 	}
 
 	/**
@@ -180,5 +183,26 @@ public abstract class FigureColoree implements Serializable {
 	 */
 	public boolean estPleine() {
 		return this.pleine;
+	}
+
+	/**
+	 * Methode accesseur permettant de recuperer l'epaisseur du contour de la figure
+	 * 
+	 * @return L'epaisseur du contour de la figure
+	 */
+	public int getEpaisseur() {
+		return this.epaisseur;
+	}
+
+	/**
+	 * Methode permettant de changer l'epaisseur du contour de la figure
+	 * 
+	 * @param epaisseur
+	 *            La nouvelle epaisseur du contour de la figure
+	 */
+	public void changerEpaisseur(int epaisseur) {
+		if(epaisseur > 0) {
+			this.epaisseur = epaisseur;
+		}
 	}
 }

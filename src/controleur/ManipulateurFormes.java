@@ -1,4 +1,5 @@
 package controleur;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -34,8 +35,8 @@ public class ManipulateurFormes implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// On verifie que le modele n'est pas null et qu'il est en mode manipulation, ainsi qu'il y a une figure selectionne
-		if(this.model != null && this.model.getType() == 2 && this.model.getFigureSelectionnee() != null) {
+		// On verifie que le modele n'est pas null et qu'il y a une figure selectionne
+		if(this.model != null && this.model.getFigureSelectionnee() != null) {
 			// Si le bouton est le bouton gauche de la souris
 			if(SwingUtilities.isLeftMouseButton(e)) {
 				// On recupere la figure selectionnee et on deplace tous les points de la figure par la difference entre la position precedente de la souris et l'actuelle
@@ -56,7 +57,7 @@ public class ManipulateurFormes implements MouseListener, MouseMotionListener {
 				// On oublie pas de definir la position precedente de la souris avec l'actuelle
 				this.lastX = x;
 				this.lastY = y;
-			// Si le bouton clique est le bouton droit de la souris et qu'un carre de selectio est selectionne
+				// Si le bouton clique est le bouton droit de la souris et qu'un carre de selectio est selectionne
 			} else if(SwingUtilities.isRightMouseButton(e) && this.selection != -1) {
 				// On deplacement le carre de selection selectionne de la difference entre le position precedente de la souris et l'actuelle
 				int x = e.getX();
@@ -83,8 +84,8 @@ public class ManipulateurFormes implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// On verifie que le modele n'est pas null et qu'il est en mode manipulation
-		if(this.model != null && this.model.getType() == 2) {
+		// On verifie que le modele n'est pas null
+		if(this.model != null) {
 			int button = e.getButton();
 			// Si le bouton clique est le bouton gauche
 			if(button == MouseEvent.BUTTON1) {
@@ -104,7 +105,7 @@ public class ManipulateurFormes implements MouseListener, MouseMotionListener {
 					lfg.add(selection);
 					this.model.setLfg(lfg);
 				}
-			// Si le bouton de la souris clique est le bouton droite et qu'il y a une figure selectionnee
+				// Si le bouton de la souris clique est le bouton droite et qu'il y a une figure selectionnee
 			} else if(button == MouseEvent.BUTTON3 && this.model.getFigureSelectionnee() != null) {
 				// On voit si un carre de selection est selectionne au coordonnees de la souris
 				FigureColoree selection = this.model.getFigureSelectionnee();

@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -14,6 +16,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -26,21 +29,25 @@ import modele.Losange;
 import modele.Quadrilatere;
 import modele.Rectangle;
 import modele.Triangle;
+import vue.VueDessin;
 
 // Classe representant le panel de boutons permettant a l'utilisateur de choisir le type de dessin a effectuer
 public class PanneauChoix extends JPanel {
 
 	// Le modele de dessin sur lequel s'appuyer pour creer une nouvelle figure a ajouter au dessin
-	private DessinModele dessin;
+	private DessinModele model;
+	// La vue du dessin dont on devra ajouter les listeners ou bien les supprimer
+	private VueDessin vue;
 
 	/**
 	 * Constructeur du panneau de choix avec les boutons et leurs evenements
 	 * 
-	 * @param dessin
+	 * @param model
 	 *            Le modele de dessin pour construire les figures
 	 */
-	public PanneauChoix(DessinModele dessin) {
-		this.dessin = dessin;
+	public PanneauChoix(DessinModele model, VueDessin vue) {
+		this.model = model;
+		this.vue = vue;
 		// On dessine le panneau choix sous forme d'une grille de 2 par 1 (ligne x colonne)
 		this.setLayout(new GridLayout(2, 1));
 		JPanel panelcombobox = new JPanel();
@@ -53,12 +60,12 @@ public class PanneauChoix extends JPanel {
 				Color c = JColorChooser.showDialog(PanneauChoix.this.getParent(), "Choix de la couleur des figures", Color.BLACK);
 				// Si l'utilisateur a choisi une couleur
 				if(c != null) {
-					if(PanneauChoix.this.dessin.getFigureEnCours() != null) {
-						PanneauChoix.this.dessin.getFigureEnCours().changeCouleur(c);
+					if(PanneauChoix.this.model.getFigureEnCours() != null) {
+						PanneauChoix.this.model.getFigureEnCours().changeCouleur(c);
 					}
 					// Si on est en mode de manipulation on change aussi la couleur de la figure selectionnee si il y en a une
-					if(PanneauChoix.this.dessin.getType() == 2) {
-						PanneauChoix.this.dessin.changerCouleur(PanneauChoix.this.dessin.getFigureSelectionnee(), c);
+					if(PanneauChoix.this.model.getType() == 2) {
+						PanneauChoix.this.model.changerCouleur(PanneauChoix.this.model.getFigureSelectionnee(), c);
 					}
 				}
 			}
@@ -71,11 +78,27 @@ public class PanneauChoix extends JPanel {
 			public void itemStateChanged(ItemEvent e) {
 				// On construit la figure et on lui applique la couleur de la figure precedemment en construction
 				FigureColoree fc = PanneauChoix.this.creeFigure(choixforme.getSelectedIndex());
-				FigureColoree ancienne = PanneauChoix.this.dessin.getFigureEnCours();
+				FigureColoree ancienne = PanneauChoix.this.model.getFigureEnCours();
 				if(ancienne != null) {
 					fc.changeCouleur(ancienne.getCouleur());
 				}
-				PanneauChoix.this.dessin.construit(fc);
+				PanneauChoix.this.model.construit(fc);
+			}
+		});
+		// On ajoute le choix de l'epaisseur du contour de la figure
+		final JSlider choixepaisseur = new JSlider(1, 6, 2);
+		choixepaisseur.setMajorTickSpacing(1);
+		choixepaisseur.setPaintTicks(true);
+		choixepaisseur.setPaintLabels(true);
+		choixepaisseur.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if(PanneauChoix.this.model.getFigureEnCours() != null) {
+					PanneauChoix.this.model.getFigureEnCours().changerEpaisseur(choixepaisseur.getValue());
+				}
+				if(PanneauChoix.this.model.getType() == 2) {
+					PanneauChoix.this.model.changerEpaisseur(PanneauChoix.this.model.getFigureSelectionnee(), choixepaisseur.getValue());
+				}
 			}
 		});
 		// On ajoute le choix de figure pleine ou non
@@ -84,18 +107,20 @@ public class PanneauChoix extends JPanel {
 		choixpleine.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if(PanneauChoix.this.dessin.getFigureEnCours() != null) {
-					PanneauChoix.this.dessin.getFigureEnCours().mettrePleine(choixpleine.isSelected());
+				if(PanneauChoix.this.model.getFigureEnCours() != null) {
+					PanneauChoix.this.model.getFigureEnCours().mettrePleine(choixpleine.isSelected());
 				}
-				if(PanneauChoix.this.dessin.getType() == 2) {
-					PanneauChoix.this.dessin.mettrePleine(PanneauChoix.this.dessin.getFigureSelectionnee(), choixpleine.isSelected());
+				if(PanneauChoix.this.model.getType() == 2) {
+					PanneauChoix.this.model.mettrePleine(PanneauChoix.this.model.getFigureSelectionnee(), choixpleine.isSelected());
 				}
+				choixepaisseur.setEnabled(!choixpleine.isSelected());
 			}
 		});
 		// On ajoute les choix
 		panelcombobox.add(choixpleine);
 		panelcombobox.add(choixforme);
 		panelcombobox.add(choixcouleur);
+		panelcombobox.add(choixepaisseur);
 		// On creer les boutons du choix du mode et on leur ajoute le listener associe
 		JPanel panelboutons = new JPanel();
 		String[] names = { "Nouvelle figure", "Tracé à main levée", "Manipulations" };
@@ -108,29 +133,46 @@ public class PanneauChoix extends JPanel {
 					JRadioButton radiobutton = (JRadioButton) e.getSource();
 					group.clearSelection();
 					radiobutton.setSelected(true);
+					// On supprime tous les listeners de la vue dessin
+					for(MouseListener l : PanneauChoix.this.vue.getMouseListeners()) {
+						PanneauChoix.this.vue.removeMouseListener(l);
+					}
+					for(MouseMotionListener l : PanneauChoix.this.vue.getMouseMotionListeners()) {
+						PanneauChoix.this.vue.removeMouseMotionListener(l);
+					}
 					// On deselectionne la figure selectionnee dans le modele
-					FigureColoree selectionnee = PanneauChoix.this.dessin.getFigureSelectionnee();
+					FigureColoree selectionnee = PanneauChoix.this.model.getFigureSelectionnee();
 					if(selectionnee != null) {
 						selectionnee.deSelectionne();
-						PanneauChoix.this.dessin.setFigureSelectionnee(null);
+						PanneauChoix.this.model.setFigureSelectionnee(null);
 					}
 					// Si on appui sur le bouton pour la construction d'une nouvelle figure
 					if(radiobutton.getText().equals("Nouvelle figure")) {
 						choixforme.setEnabled(true);
 						choixcouleur.setEnabled(true);
-						PanneauChoix.this.dessin.changerType(0);
+						choixpleine.setEnabled(true);
+						PanneauChoix.this.model.changerType(0);
+						PanneauChoix.this.vue.addMouseListener(new FabricantFigures(PanneauChoix.this.model));
 						// Si on appui sur le bouton pour tracer des traits
 					} else if(radiobutton.getText().equals("Tracé à main levée")) {
 						choixforme.setEnabled(false);
 						choixcouleur.setEnabled(true);
-						PanneauChoix.this.dessin.changerType(1);
+						choixpleine.setEnabled(false);
+						PanneauChoix.this.model.changerType(1);
+						TraceTrait l = new TraceTrait(PanneauChoix.this.model);
+						PanneauChoix.this.vue.addMouseListener(l);
+						PanneauChoix.this.vue.addMouseMotionListener(l);
 						// Sinon alors on passe en mode manipulation
-					} else {
+					} else if(radiobutton.getText().equals("Manipulations")) {
 						choixforme.setEnabled(false);
 						choixcouleur.setEnabled(true);
-						PanneauChoix.this.dessin.changerType(2);
+						choixpleine.setEnabled(true);
+						PanneauChoix.this.model.changerType(2);
+						ManipulateurFormes l = new ManipulateurFormes(PanneauChoix.this.model);
+						PanneauChoix.this.vue.addMouseListener(l);
+						PanneauChoix.this.vue.addMouseMotionListener(l);
 					}
-					PanneauChoix.this.dessin.setNbClic(0);
+					PanneauChoix.this.model.setNbClic(0);
 				}
 			}
 		};
@@ -148,7 +190,7 @@ public class PanneauChoix extends JPanel {
 		this.add(panelboutons);
 		this.add(panelcombobox);
 		// Et on construit une quadrilatere de base
-		this.dessin.construit(new Quadrilatere());
+		this.model.construit(new Quadrilatere());
 	}
 
 	/**

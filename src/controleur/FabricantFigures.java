@@ -28,8 +28,8 @@ public class FabricantFigures implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// On verifie que le modele n'est pas null et qu'il est bien en mode creation de figure
-		if(this.model != null && this.model.getType() == 0) {
+		// On verifie que le modele n'est pas null
+		if(this.model != null) {
 			// On ajoute le point cliquer pour la creation de figure en cours
 			this.model.ajouterPoint(e.getX(), e.getY());
 		}

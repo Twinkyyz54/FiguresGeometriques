@@ -1,7 +1,9 @@
 package modele;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.io.Serializable;
 
 // Classe representant un trait
@@ -17,6 +19,8 @@ public class Trait implements Serializable {
 	private int x2;
 	// Ordonnee du second point du trait
 	private int y2;
+	// Epaisseur du trait
+	private int epaisseur;
 
 	/**
 	 * Methode accesseur permettant de recuperer la couleur du trait
@@ -64,6 +68,15 @@ public class Trait implements Serializable {
 	}
 
 	/**
+	 * Methode accesseur permettant de recuperer l'epaisseur du trait
+	 * 
+	 * @return L'epaisseur du trait
+	 */
+	public int getEpaisseur() {
+		return this.epaisseur;
+	}
+
+	/**
 	 * Constructeur du trait à partir de deux point et de sa couleur
 	 * 
 	 * @param couleur
@@ -77,12 +90,15 @@ public class Trait implements Serializable {
 	 * @param y2
 	 *            Ordonnee du second point du trait
 	 */
-	public Trait(Color couleur, int x1, int y1, int x2, int y2) {
+	public Trait(Color couleur, int x1, int y1, int x2, int y2, int epaisseur) {
 		this.couleur = couleur;
 		this.x1 = x1;
 		this.y1 = y1;
 		this.x2 = x2;
 		this.y2 = y2;
+		if(epaisseur <= 0)
+			epaisseur = 1;
+		this.epaisseur = epaisseur;
 	}
 
 	/**
@@ -93,8 +109,10 @@ public class Trait implements Serializable {
 	 */
 	public void affiche(Graphics g) {
 		if(g != null) {
-			g.setColor(this.couleur);
-			g.drawLine(this.x1, this.y1, this.x2, this.y2);
+			Graphics2D g2d = (Graphics2D) g;
+			g2d.setColor(this.couleur);
+			g2d.setStroke(new BasicStroke(this.epaisseur));
+			g2d.drawLine(this.x1, this.y1, this.x2, this.y2);
 		}
 	}
 }
