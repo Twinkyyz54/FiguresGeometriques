@@ -36,8 +36,8 @@ public class Rectangle extends Quadrilatere {
 
 	@Override
 	public void transformation(int dx, int dy, int idxcarre) {
-		// Si il y a des points de memorisation de la figure et que l'indice fourni correspond bien a de ces indices
-		if(tab_mem != null && idxcarre < tab_mem.length && idxcarre >= 0) {
+		// Si l'indice fourni correspond bien a des indices des points du tableau
+		if(idxcarre < tab_mem.length && idxcarre >= 0) {
 			Point p1 = tab_mem[0];
 			Point p2 = tab_mem[2];
 			// On verifie que les deux points permettant la construction du nouveau rectangle ne sont pas null

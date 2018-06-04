@@ -151,6 +151,7 @@ public class PanneauChoix extends JPanel {
 						choixforme.setEnabled(true);
 						choixcouleur.setEnabled(true);
 						choixpleine.setEnabled(true);
+						choixepaisseur.setEnabled(!choixpleine.isSelected());
 						PanneauChoix.this.model.changerType(0);
 						PanneauChoix.this.vue.addMouseListener(new FabricantFigures(PanneauChoix.this.model));
 						// Si on appui sur le bouton pour tracer des traits
@@ -158,6 +159,7 @@ public class PanneauChoix extends JPanel {
 						choixforme.setEnabled(false);
 						choixcouleur.setEnabled(true);
 						choixpleine.setEnabled(false);
+						choixepaisseur.setEnabled(true);
 						PanneauChoix.this.model.changerType(1);
 						TraceTrait l = new TraceTrait(PanneauChoix.this.model);
 						PanneauChoix.this.vue.addMouseListener(l);
@@ -167,6 +169,7 @@ public class PanneauChoix extends JPanel {
 						choixforme.setEnabled(false);
 						choixcouleur.setEnabled(true);
 						choixpleine.setEnabled(true);
+						choixepaisseur.setEnabled(!choixpleine.isSelected());
 						PanneauChoix.this.model.changerType(2);
 						ManipulateurFormes l = new ManipulateurFormes(PanneauChoix.this.model);
 						PanneauChoix.this.vue.addMouseListener(l);

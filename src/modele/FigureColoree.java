@@ -71,7 +71,9 @@ public abstract class FigureColoree implements Serializable {
 	 *            Le graphique sur lequel on va dessiner la figure coloree
 	 */
 	public void affiche(Graphics g) {
+		// Si le graphique fournis n'est pas null et que la figure est selectionnee
 		if(g != null && selected) {
+			// On affiche les carres de selection de la figure
 			g.setColor(Color.BLACK);
 			for(Point p : tab_mem) {
 				g.fillRect(p.rendreX() - TAILLE_CARRE_SELECTION / 2, p.rendreY() - TAILLE_CARRE_SELECTION / 2, TAILLE_CARRE_SELECTION, TAILLE_CARRE_SELECTION);
@@ -100,6 +102,7 @@ public abstract class FigureColoree implements Serializable {
 	 *            La nouvelle couleur de la figure
 	 */
 	public void changeCouleur(Color couleur) {
+		// Si la couleur n'est pas null on change la couleur de la figure
 		if(couleur != null) {
 			this.couleur = couleur;
 		}
@@ -115,16 +118,16 @@ public abstract class FigureColoree implements Serializable {
 	 * @return L'indice du carre de selection selectionne ou -1 sinon il n'y en a pas
 	 */
 	public int carreDeSelection(int x, int y) {
-		if(tab_mem != null) {
-			for(int i = 0; i < tab_mem.length; i++) {
-				Point p = tab_mem[i];
-				if(p != null) {
-					if(Math.abs(p.rendreX() - x) <= PERIPHERIE_CARRE_SELECTION && Math.abs(p.rendreY() - y) <= PERIPHERIE_CARRE_SELECTION) {
-						return i;
-					}
+		// On parcourt tous les points de la figure et on recupere l'indice du premier selectionne
+		for(int i = 0; i < tab_mem.length; i++) {
+			Point p = tab_mem[i];
+			if(p != null) {
+				if(Math.abs(p.rendreX() - x) <= PERIPHERIE_CARRE_SELECTION && Math.abs(p.rendreY() - y) <= PERIPHERIE_CARRE_SELECTION) {
+					return i;
 				}
 			}
 		}
+		// Sinon on retourne -1
 		return -1;
 	}
 
@@ -139,9 +142,12 @@ public abstract class FigureColoree implements Serializable {
 	 *            L'indice du carre de selection deplacer
 	 */
 	public void transformation(int dx, int dy, int idxcarre) {
-		if(tab_mem != null && idxcarre < tab_mem.length && idxcarre >= 0) {
+		// On verifie que l'indice pour la transformation est bien dans le tableau de points
+		if(idxcarre < tab_mem.length && idxcarre >= 0) {
 			Point p = tab_mem[idxcarre];
+			// On verifie que point selectionne n'est pas null
 			if(p != null) {
+				// On translate le point et on reconstruit la figure en consequence
 				p.translation(dx, dy);
 				this.modifierPoints(this.tab_mem);
 			}
@@ -201,6 +207,7 @@ public abstract class FigureColoree implements Serializable {
 	 *            La nouvelle epaisseur du contour de la figure
 	 */
 	public void changerEpaisseur(int epaisseur) {
+		// On verifie que l'epaisseur est strictement superieur a 0
 		if(epaisseur > 0) {
 			this.epaisseur = epaisseur;
 		}

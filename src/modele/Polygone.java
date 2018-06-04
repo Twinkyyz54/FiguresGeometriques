@@ -34,17 +34,22 @@ public abstract class Polygone extends FigureColoree {
 
 	@Override
 	public void affiche(Graphics g) {
+		// On verifie que la graphique n'est pas null
 		if(g != null) {
-			g.setColor(this.couleur);
-			if(this.pleine) {
-				g.fillPolygon(this.p);
-			} else {
-				Graphics2D g2d = (Graphics2D) g;
-				g2d.setStroke(new BasicStroke(this.epaisseur));
-				g.drawPolygon(this.p);
+			// On s'assure que le polygone n'est pas null pour l'afficher
+			if(this.p != null) {
+				// On affiche le polygone sur le graphique
+				g.setColor(this.couleur);
+				if(this.pleine) {
+					g.fillPolygon(this.p);
+				} else {
+					Graphics2D g2d = (Graphics2D) g;
+					g2d.setStroke(new BasicStroke(this.epaisseur));
+					g.drawPolygon(this.p);
+				}
+				super.affiche(g);
 			}
 		}
-		super.affiche(g);
 	}
 
 	@Override

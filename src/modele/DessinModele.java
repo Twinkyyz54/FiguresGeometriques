@@ -40,7 +40,9 @@ public class DessinModele extends Observable {
 	 *            La figure a ajouter a la liste
 	 */
 	public void ajouter(FigureColoree figure) {
+		// On verifie que la figure n'est pas null
 		if(figure != null) {
+			// On l'ajoute a la liste des figure et on informe la vue
 			this.lfg.add(figure);
 			this.setChanged();
 			this.notifyObservers();
@@ -56,7 +58,9 @@ public class DessinModele extends Observable {
 	 *            La nouvelle couleur de la figure
 	 */
 	public void changerCouleur(FigureColoree figure, Color couleur) {
+		// On verifie que la figure n'est pas null et qu'elle appartient a la liste des figures
 		if(figure != null && this.lfg.contains(figure)) {
+			// On change sa couleur et on informe la vue
 			figure.changeCouleur(couleur);
 			this.setChanged();
 			this.notifyObservers();
@@ -72,7 +76,9 @@ public class DessinModele extends Observable {
 	 *            Les nouveaux points de la figure
 	 */
 	public void changerPoints(FigureColoree figure, Point[] points) {
+		// On verifie que la figure n'est pas null et qu'elle appartient a la liste des figures
 		if(figure != null && this.lfg.contains(figure)) {
+			// On change ses points et on informe la vue
 			figure.modifierPoints(points);
 			this.setChanged();
 			this.notifyObservers();
@@ -86,9 +92,13 @@ public class DessinModele extends Observable {
 	 *            L'instance de la figure coloree a construire
 	 */
 	public void construit(FigureColoree figure) {
-		this.figureEnCours = figure;
-		this.nbClic = 0;
-		this.points_Cliques = new Point[figure.nbClics()];
+		// On verifie que la figure n'est pas null
+		if(figure != null) {
+			// On declare la figure en cours comme etant celle fournis et on reinitialise les clics
+			this.figureEnCours = figure;
+			this.nbClic = 0;
+			this.points_Cliques = new Point[figure.nbClics()];
+		}
 	}
 
 	/**
@@ -100,21 +110,28 @@ public class DessinModele extends Observable {
 	 *            L'ordonnee du point a ajouter
 	 */
 	public void ajouterPoint(int x, int y) {
+		// On verifie qu'il y a bien une figure en cours
 		if(this.figureEnCours != null) {
+			// On ajoute le nouveau point au points cliques
 			this.points_Cliques[this.nbClic++] = new Point(x, y);
+			// Si on a atteint le nombre de clics necessaires pour creer la figure
 			if(this.nbClic == this.figureEnCours.nbClics()) {
+				// On modifie les points de la figure en cours avec deux cliques et on l'ajoute a la liste des figures crees
 				this.figureEnCours.modifierPoints(this.points_Cliques);
 				this.ajouter(this.figureEnCours);
+				// On tente d'instantier une figure du meme type que l'ancienne avec la meme couleur, remplissage...
 				try {
 					FigureColoree nouvelle = this.figureEnCours.getClass().newInstance();
 					nouvelle.changeCouleur(this.figureEnCours.couleur);
 					nouvelle.mettrePleine(this.figureEnCours.pleine);
+					nouvelle.changerEpaisseur(this.figureEnCours.epaisseur);
 					this.figureEnCours = nouvelle;
 					this.points_Cliques = new Point[this.figureEnCours.nbClics()];
 				} catch(InstantiationException | IllegalAccessException e) {
 					this.figureEnCours = null;
 					this.points_Cliques = new Point[0];
 				}
+				// On reinitialise le nombre de clics a 0 dans tous les cas
 				this.nbClic = 0;
 			}
 		}
@@ -174,11 +191,14 @@ public class DessinModele extends Observable {
 	 *            La nouvelle liste des figures deja construites
 	 */
 	public void setLfg(ArrayList<FigureColoree> lfg) {
+		// On verifie que la liste de figure n'est pas null
 		if(lfg == null) {
+			// Si elle l'est en vide la liste des figures crees
 			this.lfg.clear();
 		} else {
 			this.lfg = lfg;
 		}
+		// On informe la vue du changement
 		this.setChanged();
 		this.notifyObservers();
 	}
@@ -192,11 +212,14 @@ public class DessinModele extends Observable {
 	 *            L'ordonnee du points
 	 */
 	public void selectionnerFigure(int x, int y) {
+		// Si il y a deja un figure selectionnee
 		if(this.figureSelectionnee != null) {
+			// On la deselectionne
 			this.figureSelectionnee.deSelectionne();
 		}
 		this.figureSelectionnee = null;
 		int i = this.lfg.size() - 1;
+		// On parcours les figures construites en partant des dernieres construites et on selectionne celle qu'il faut
 		while(i >= 0 && this.figureSelectionnee == null) {
 			FigureColoree figure = this.lfg.get(i);
 			if(figure != null && figure.estDedans(x, y)) {
@@ -205,9 +228,12 @@ public class DessinModele extends Observable {
 				--i;
 			}
 		}
+		// Si une figure a etait selectionnee
 		if(this.figureSelectionnee != null) {
+			// On la selectionne
 			this.figureSelectionnee.selectionne();
 		}
+		// On en informe la vue
 		this.setChanged();
 		this.notifyObservers();
 	}
@@ -228,11 +254,7 @@ public class DessinModele extends Observable {
 	 *            Le nouveau type d'action
 	 */
 	public void changerType(int type) {
-		if(type != this.type) {
-			this.type = type;
-			this.setChanged();
-			this.notifyObservers();
-		}
+		this.type = type;
 	}
 
 	/**
@@ -260,7 +282,9 @@ public class DessinModele extends Observable {
 	 *            Le nouveau trait a ajouter
 	 */
 	public void ajouterTrait(Trait trait) {
+		// On verifie que le nouveau trait n'est pas null
 		if(trait != null) {
+			// On l'ajoute a la liste des traits et on en informe la vue
 			this.traits.add(trait);
 			this.setChanged();
 			this.notifyObservers();
@@ -278,7 +302,9 @@ public class DessinModele extends Observable {
 	 *            L'indice du carre de selection deplace
 	 */
 	public void transformerFigureSelectionnee(int dx, int dy, int idxcarre) {
+		// On verifie qu'il y a bien une figure selectionnee
 		if(this.getFigureSelectionnee() != null) {
+			// On tranforme la figure selectionnee et on en informe la vue
 			this.getFigureSelectionnee().transformation(dx, dy, idxcarre);
 			this.setChanged();
 			this.notifyObservers();
@@ -292,11 +318,16 @@ public class DessinModele extends Observable {
 	 *            La nouvelle liste de traits du dessin
 	 */
 	public void setTraits(ArrayList<Trait> traits) {
-		if(traits != null) {
+		// On regarde si la liste des nouveaux traits est null
+		if(traits == null) {
+			// Si elle l'est alors on vide la liste des traits
+			this.traits.clear();
+		} else {
 			this.traits = traits;
-			this.setChanged();
-			this.notifyObservers();
 		}
+		// Dans tous les cas on en informe la vue
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 	/**
@@ -306,6 +337,7 @@ public class DessinModele extends Observable {
 	 *            La nouvelle figure selectionnee
 	 */
 	public void setFigureSelectionnee(FigureColoree figureSelectionnee) {
+		// On modifie la figure selectionne par celle fournis et on en informe la vue
 		this.figureSelectionnee = figureSelectionnee;
 		this.setChanged();
 		this.notifyObservers();
@@ -320,7 +352,9 @@ public class DessinModele extends Observable {
 	 *            Boolean indiquant si la figure doit etre pleine ou non
 	 */
 	public void mettrePleine(FigureColoree fc, boolean pleine) {
+		// On verifie que la figure n'est pas null et que la liste des figures la contient
 		if(fc != null && this.lfg.contains(fc)) {
+			// On change son remplissage et on en informe le contructeur
 			fc.mettrePleine(pleine);
 			this.setChanged();
 			this.notifyObservers();
@@ -336,7 +370,9 @@ public class DessinModele extends Observable {
 	 *            La nouvelle epaisseur du contour
 	 */
 	public void changerEpaisseur(FigureColoree fc, int epaisseur) {
+		// On verifie que la figure n'est pas null et que la liste des figures la contient
 		if(fc != null && this.lfg.contains(fc)) {
+			// On change l'epaisseur de la figure et on en informe la vue
 			fc.changerEpaisseur(epaisseur);
 			this.setChanged();
 			this.notifyObservers();
