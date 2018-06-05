@@ -106,4 +106,43 @@ public class Point implements Serializable {
 		this.x += dx;
 		this.y += dy;
 	}
+
+	/**
+	 * Methode permettant de faire une roation du point d'un certain angle autour d'un point d'origine avec un distance finale differente
+	 * 
+	 * @param origine
+	 *            Le point autour du quel on doit faire la rotation
+	 * @param angle
+	 *            L'angle en radian de la rotation
+	 * @param distanceFinale
+	 *            La distance finale qui devra separer l'origine du point
+	 */
+	public void rotation(Point origine, double angle, double distanceFinale) {
+		if(origine != null) {
+			double angleInitial = this.recupererAngle(origine);
+			double angleFinal = angleInitial + angle;
+			this.x = (int) Math.round(origine.rendreX() + Math.cos(angleFinal) * distanceFinale);
+			this.y = (int) Math.round(origine.rendreY() - Math.sin(angleFinal) * distanceFinale);
+		}
+	}
+
+	/**
+	 * Methode permettant de recuperer l'angle du point par rapport a un point d'origine en radian
+	 * 
+	 * @param origine
+	 *            Le point d'origine pour calculer l'angle
+	 * @return L'angle du point par rapport a l'origine
+	 */
+	public double recupererAngle(Point origine) {
+		if(origine != null) {
+			double dist = this.distance(origine);
+			if(dist > 0) {
+				double diffX = this.rendreX() - origine.rendreX();
+				double diffY = this.rendreY() - origine.rendreY();
+				double angle = diffY <= 0 ? Math.acos(diffX / dist) : -Math.acos(diffX / dist);
+				return angle;
+			}
+		}
+		return 0;
+	}
 }

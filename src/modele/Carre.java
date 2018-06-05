@@ -37,7 +37,7 @@ public class Carre extends Quadrilatere {
 
 	@Override
 	public void transformation(int dx, int dy, int idxcarre) {
-		// Si l'indice fournis est de dans le tableau de points
+		// Si l'indice fournis est dans le tableau de points
 		if(idxcarre < tab_mem.length && idxcarre >= 0) {
 			// On recupere les deux points qui permettent la construction de la figure
 			Point p1 = tab_mem[0];

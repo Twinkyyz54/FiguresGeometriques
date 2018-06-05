@@ -24,6 +24,7 @@ import modele.Carre;
 import modele.Cercle;
 import modele.DessinModele;
 import modele.Ellipse;
+import modele.Etoile;
 import modele.FigureColoree;
 import modele.Losange;
 import modele.Quadrilatere;
@@ -71,7 +72,7 @@ public class PanneauChoix extends JPanel {
 			}
 		});
 		// On ajoute le choix des formes des figures
-		final JComboBox<String> choixforme = new JComboBox<String>(new String[] { "Quadrilatère", "Triangle", "Rectangle", "Cercle", "Carré", "Losange", "Ellipse" });
+		final JComboBox<String> choixforme = new JComboBox<String>(new String[] { "Quadrilatère", "Triangle", "Rectangle", "Cercle", "Carré", "Losange", "Ellipse", "Etoile" });
 		choixforme.setFocusable(false);
 		choixforme.addItemListener(new ItemListener() {
 			@Override
@@ -220,6 +221,8 @@ public class PanneauChoix extends JPanel {
 			return new Losange();
 		case 6:
 			return new Ellipse();
+		case 7:
+			return new Etoile();
 		default:
 			return null;
 		}
