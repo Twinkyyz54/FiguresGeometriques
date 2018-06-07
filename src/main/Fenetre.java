@@ -30,6 +30,7 @@ import controleur.ManipulateurFormes;
 import controleur.PanneauChoix;
 import controleur.TraceTrait;
 import modele.DessinModele;
+import modele.Dessinable;
 import modele.FigureColoree;
 import modele.Trait;
 import vue.VueDessin;
@@ -201,12 +202,9 @@ public class Fenetre {
 	public void sauvegarder(String urlfichier) throws IOException {
 		// Si le chemin du fichier n'est pas null
 		if(urlfichier != null) {
-			// On serialize en tant que tableau d'objets les figures et traits du dessin dans le fichier
+			// On serialize la liste des figures dans le fichier
 			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(urlfichier));
-			Object[] objets = new Object[2];
-			objets[0] = this.model.getLfg();
-			objets[1] = this.model.getTraits();
-			out.writeObject(objets);
+			out.writeObject(this.model.getLfg());
 			out.close();
 		}
 	}
@@ -225,16 +223,11 @@ public class Fenetre {
 	public void charger(String urlfichier) throws IOException, ClassNotFoundException {
 		// Si le chemin du fichier n'est pas null et que le modele de dessin non plus
 		if(urlfichier != null && this.model != null) {
-			// On deserialize en tant que tableau d'objets les figures et traits a partir du fichier
+			// On deserialize en tant que la liste de figures a partir du fichier
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(urlfichier));
-			Object[] objets = (Object[]) in.readObject();
-			// On verifie que la tableau d'objet est bien de taille 2
-			if(objets.length == 2) {
-				// On recupere les figures ainsi que les traits
-				this.model.setLfg((ArrayList<FigureColoree>) objets[0]);
-				this.model.setNbClic(0);
-				this.model.setTraits((ArrayList<Trait>) objets[1]);
-			}
+			ArrayList<Dessinable> lfg = (ArrayList<Dessinable>) in.readObject();
+			this.model.setLfg(lfg);
+			this.model.setNbClic(0);
 			in.close();
 		}
 	}
@@ -250,8 +243,9 @@ public class Fenetre {
 	public void exporter(String urlfichier) throws IOException {
 		// Si le chemin du fichier n'est pas null
 		if(urlfichier != null) {
+			Dimension size = this.vue.getPreferredSize();
 			// On creer un image coloree de la taille de la vue dessin
-			BufferedImage image = new BufferedImage(this.vue.getWidth(), this.vue.getHeight(), BufferedImage.TYPE_INT_RGB);
+			BufferedImage image = new BufferedImage((int) Math.round(size.getWidth()), (int) Math.round(size.getHeight()), BufferedImage.TYPE_INT_RGB);
 			// On recupere un graphique de l'image
 			Graphics g = image.createGraphics();
 			// On affiche le dessin de vue dessin sur le graphique

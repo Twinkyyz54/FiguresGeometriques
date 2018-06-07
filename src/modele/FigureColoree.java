@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.io.Serializable;
 
 // Classe abstraite representant une figure coloree
-public abstract class FigureColoree implements Serializable {
+public abstract class FigureColoree implements Dessinable, Serializable {
 
 	// Constante statique entiere correspondant a la taille d'un carre de selection d'une figure coloree
 	private final static int TAILLE_CARRE_SELECTION = 7;
@@ -53,23 +53,7 @@ public abstract class FigureColoree implements Serializable {
 	 */
 	public abstract void modifierPoints(Point[] points);
 
-	/**
-	 * Methode permettant de savoir si une abscisse et une ordonee d'un point sont dans la figure coloree
-	 * 
-	 * @param x
-	 *            Abscisse du point
-	 * @param y
-	 *            Ordonnee du point
-	 * @return Vrai si le point est dans la figure coloree, faux sinon
-	 */
-	public abstract boolean estDedans(int x, int y);
-
-	/**
-	 * Methode permettant d'afficher sur un graphique la figure coloree
-	 * 
-	 * @param g
-	 *            Le graphique sur lequel on va dessiner la figure coloree
-	 */
+	@Override
 	public void affiche(Graphics g) {
 		// Si le graphique fournis n'est pas null et que la figure est selectionnee
 		if(g != null && selected) {

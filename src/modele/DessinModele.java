@@ -9,8 +9,8 @@ import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 // Classe representant un modele de dessin pour creer et modifier des figures colorees
 public class DessinModele extends Observable {
 
-	// Liste des figures colorees crees
-	private ArrayList<FigureColoree> lfg;
+	// Liste des figures crees
+	private ArrayList<Dessinable> lfg;
 	// Figure coloree en cours de creation
 	private FigureColoree figureEnCours;
 	// Nombre de clics deja effectues pour la creation de la figure en cours
@@ -21,25 +21,22 @@ public class DessinModele extends Observable {
 	private int type;
 	// La figure coloree qui est selectionnee
 	private FigureColoree figureSelectionnee;
-	// Liste des traits crees par le modele
-	private ArrayList<Trait> traits;
 
 	/**
 	 * Constructeur d'un modele de dessin
 	 */
 	public DessinModele() {
-		this.lfg = new ArrayList<FigureColoree>();
-		this.traits = new ArrayList<Trait>();
+		this.lfg = new ArrayList<Dessinable>();
 		this.points_Cliques = new Point[0];
 	}
 
 	/**
-	 * Methode permettant d'ajouter une figure coloree a la liste des celles deja construites
+	 * Methode permettant d'ajouter une figure a la liste des celles deja construites
 	 * 
 	 * @param figure
 	 *            La figure a ajouter a la liste
 	 */
-	public void ajouter(FigureColoree figure) {
+	public void ajouter(Dessinable figure) {
 		// On verifie que la figure n'est pas null
 		if(figure != null) {
 			// On l'ajoute a la liste des figure et on informe la vue
@@ -161,7 +158,7 @@ public class DessinModele extends Observable {
 	 * 
 	 * @return La liste des figures crees par le modele de dessin
 	 */
-	public ArrayList<FigureColoree> getLfg() {
+	public ArrayList<Dessinable> getLfg() {
 		return this.lfg;
 	}
 
@@ -190,7 +187,7 @@ public class DessinModele extends Observable {
 	 * @param lfg
 	 *            La nouvelle liste des figures deja construites
 	 */
-	public void setLfg(ArrayList<FigureColoree> lfg) {
+	public void setLfg(ArrayList<Dessinable> lfg) {
 		// On verifie que la liste de figure n'est pas null
 		if(lfg == null) {
 			// Si elle l'est en vide la liste des figures crees
@@ -221,12 +218,13 @@ public class DessinModele extends Observable {
 		int i = this.lfg.size() - 1;
 		// On parcours les figures construites en partant des dernieres construites et on selectionne celle qu'il faut
 		while(i >= 0 && this.figureSelectionnee == null) {
-			FigureColoree figure = this.lfg.get(i);
-			if(figure != null && figure.estDedans(x, y)) {
-				this.figureSelectionnee = figure;
-			} else {
-				--i;
+			if(this.lfg.get(i) instanceof FigureColoree) {
+				FigureColoree figure = (FigureColoree) this.lfg.get(i);
+				if(figure != null && figure.estDedans(x, y)) {
+					this.figureSelectionnee = figure;
+				}
 			}
+			--i;
 		}
 		// Si une figure a etait selectionnee
 		if(this.figureSelectionnee != null) {
@@ -267,31 +265,6 @@ public class DessinModele extends Observable {
 	}
 
 	/**
-	 * Methode accesseur permettant de recuperer la liste des traits
-	 * 
-	 * @return La liste des traits crees
-	 */
-	public ArrayList<Trait> getTraits() {
-		return this.traits;
-	}
-
-	/**
-	 * Methode permettant d'ajouter un traint a la liste des trait du dessin
-	 * 
-	 * @param trait
-	 *            Le nouveau trait a ajouter
-	 */
-	public void ajouterTrait(Trait trait) {
-		// On verifie que le nouveau trait n'est pas null
-		if(trait != null) {
-			// On l'ajoute a la liste des traits et on en informe la vue
-			this.traits.add(trait);
-			this.setChanged();
-			this.notifyObservers();
-		}
-	}
-
-	/**
 	 * Methode permettant de transformer une figure deja construite pour le dessin
 	 * 
 	 * @param dx
@@ -309,25 +282,6 @@ public class DessinModele extends Observable {
 			this.setChanged();
 			this.notifyObservers();
 		}
-	}
-
-	/**
-	 * Methode permettant de redefinir la liste des traits construits pour le dessin
-	 * 
-	 * @param traits
-	 *            La nouvelle liste de traits du dessin
-	 */
-	public void setTraits(ArrayList<Trait> traits) {
-		// On regarde si la liste des nouveaux traits est null
-		if(traits == null) {
-			// Si elle l'est alors on vide la liste des traits
-			this.traits.clear();
-		} else {
-			this.traits = traits;
-		}
-		// Dans tous les cas on en informe la vue
-		this.setChanged();
-		this.notifyObservers();
 	}
 
 	/**
@@ -374,6 +328,22 @@ public class DessinModele extends Observable {
 		if(fc != null && this.lfg.contains(fc)) {
 			// On change l'epaisseur de la figure et on en informe la vue
 			fc.changerEpaisseur(epaisseur);
+			this.setChanged();
+			this.notifyObservers();
+		}
+	}
+
+	/**
+	 * Methode permettant d'ajouter un trait a un trace du dessin
+	 * 
+	 * @param trace
+	 *            Le trace au quel on veut ajouter le trait
+	 * @param t
+	 *            Le trait a ajouter
+	 */
+	public void ajouterTrait(Trace trace, Trait t) {
+		if(trace != null && t != null && this.lfg.contains(trace)) {
+			trace.ajouterTrait(t);
 			this.setChanged();
 			this.notifyObservers();
 		}

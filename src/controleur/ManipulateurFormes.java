@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 
 import modele.DessinModele;
+import modele.Dessinable;
 import modele.FigureColoree;
 import modele.Point;
 
@@ -100,7 +101,7 @@ public class ManipulateurFormes implements MouseListener, MouseMotionListener {
 					this.lastX = x;
 					this.lastY = y;
 					// On supprime la figure selectionnee de la liste des figures puis on la rajoute de nouveau pour qu'elle repasse en premier plan
-					ArrayList<FigureColoree> lfg = this.model.getLfg();
+					ArrayList<Dessinable> lfg = this.model.getLfg();
 					lfg.remove(selection);
 					lfg.add(selection);
 					this.model.setLfg(lfg);
