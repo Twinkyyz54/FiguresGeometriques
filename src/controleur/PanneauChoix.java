@@ -124,7 +124,7 @@ public class PanneauChoix extends JPanel {
 		panelcombobox.add(choixepaisseur);
 		// On creer les boutons du choix du mode et on leur ajoute le listener associe
 		JPanel panelboutons = new JPanel();
-		String[] names = { "Nouvelle figure", "Tracé à main levée", "Manipulations" };
+		String[] names = { "Nouvelle figure", "Tracé à main levée", "Manipulations", "Supression" };
 		final ButtonGroup group = new ButtonGroup();
 		ActionListener listener = new ActionListener() {
 			@Override
@@ -165,7 +165,7 @@ public class PanneauChoix extends JPanel {
 						TraceTrait l = new TraceTrait(PanneauChoix.this.model);
 						PanneauChoix.this.vue.addMouseListener(l);
 						PanneauChoix.this.vue.addMouseMotionListener(l);
-						// Sinon alors on passe en mode manipulation
+						// Si on appui sur le bouton pour la manipulation
 					} else if(radiobutton.getText().equals("Manipulations")) {
 						choixforme.setEnabled(false);
 						choixcouleur.setEnabled(true);
@@ -175,6 +175,14 @@ public class PanneauChoix extends JPanel {
 						ManipulateurFormes l = new ManipulateurFormes(PanneauChoix.this.model);
 						PanneauChoix.this.vue.addMouseListener(l);
 						PanneauChoix.this.vue.addMouseMotionListener(l);
+						// Sinon si on appui sur le bouton pour la supression de figures
+					} else if(radiobutton.getText().equals("Supression")) {
+						choixforme.setEnabled(false);
+						choixcouleur.setEnabled(false);
+						choixpleine.setEnabled(false);
+						choixepaisseur.setEnabled(false);
+						PanneauChoix.this.model.changerType(3);
+						PanneauChoix.this.vue.addMouseListener(new SuppressionFigure(PanneauChoix.this.model, PanneauChoix.this.vue));
 					}
 					PanneauChoix.this.model.setNbClic(0);
 				}

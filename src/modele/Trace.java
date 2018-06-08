@@ -59,6 +59,23 @@ public class Trace implements Dessinable, Serializable {
 
 	@Override
 	public boolean estDedans(int x, int y) {
+		for(Trait t : this.traits) {
+			if(t.getX1() != t.getX2()) {
+				if((x >= t.getX1() && x <= t.getX2()) || (y >= t.getX2() && y <= t.getX1())) {
+					double coeffDir = (t.getY2() - t.getY1()) / (t.getX2() - t.getX1());
+					double ordOrigin = t.getY1() - (coeffDir * t.getX1());
+					if(Math.abs((coeffDir * x + ordOrigin) - y) <= epaisseur + 3) {
+						return true;
+					}
+				}
+			} else {
+				if(Math.abs(t.getX1() - x) <= epaisseur + 3) {
+					if((y >= t.getY1() && y <= t.getY2()) || (y <= t.getY1() && y >= t.getY2())) {
+						return true;
+					}
+				}
+			}
+		}
 		return false;
 	}
 

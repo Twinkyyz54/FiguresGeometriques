@@ -1,5 +1,6 @@
 package vue;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -20,6 +21,10 @@ public class VueDessin extends JPanel implements Observer {
 
 	// Liste des figures colorees a dessiner sur le panel
 	private ArrayList<Dessinable> lfg;
+	
+	public VueDessin() {
+		this.setBackground(Color.WHITE);
+	}
 
 	@Override
 	public void update(Observable o, Object arg) {

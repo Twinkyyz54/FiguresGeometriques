@@ -342,8 +342,90 @@ public class DessinModele extends Observable {
 	 *            Le trait a ajouter
 	 */
 	public void ajouterTrait(Trace trace, Trait t) {
-		if(trace != null && t != null && this.lfg.contains(trace)) {
+		// On verifie que le trace n'est pas null et que la liste des figures le contient
+		if(trace != null && this.lfg.contains(trace)) {
+			// On ajoute le trait au trace et on informe la vue du changement
 			trace.ajouterTrait(t);
+			this.setChanged();
+			this.notifyObservers();
+		}
+	}
+
+	/**
+	 * Methode permettant de supprimer la premiere figure a une position donnee
+	 * 
+	 * @param x
+	 *            Abscisse de la position
+	 * @param y
+	 *            Ordonnee de la position
+	 */
+	public void supprimerFigure(int x, int y) {
+		// On parcours la liste des figures et on recupere la premier en partant de la fin dont la position est dedans
+		Dessinable supprime = null;
+		int i = this.lfg.size() - 1;
+		while(i >= 0 && supprime == null) {
+			Dessinable dessin = this.lfg.get(i);
+			if(dessin.estDedans(x, y)) {
+				supprime = dessin;
+			}
+			i--;
+		}
+		// Si on en a trouver une alors on la supprime et on en informe la vue
+		if(supprime != null) {
+			this.lfg.remove(supprime);
+			this.setChanged();
+			this.notifyObservers();
+		}
+	}
+	
+	/**
+	 * Methode pour supprimer tous les dessins
+	 */
+	public void supprimerDessins() {
+		// Si la liste des dessins n'est pas vide
+		if(!this.lfg.isEmpty()) {
+			// On vide la liste des dessins et on en informe la vue
+			this.lfg.clear();
+			this.setChanged();
+			this.notifyObservers();
+		}
+	}
+	
+	/**
+	 * Methodes pour supprimer tous les traces
+	 */
+	public void supprimerTraces() {
+		// On recupere tous les traces construit
+		ArrayList<Trace> traces = new ArrayList<Trace>();
+		for(Dessinable dessin : this.lfg) {
+			if(dessin instanceof Trace) {
+				traces.add((Trace) dessin);
+			}
+		}
+		// Si il y a des traces
+		if(!traces.isEmpty()) {
+			// On supprime les traces et on en informe la vue
+			this.lfg.removeAll(traces);
+			this.setChanged();
+			this.notifyObservers();
+		}
+	}
+	
+	/**
+	 * Methodes pour supprimer toutes els figures colorees
+	 */
+	public void supprimerFiguresColorees() {
+		// On recupere toutes les figures colorees construite
+		ArrayList<FigureColoree> figures = new ArrayList<FigureColoree>();
+		for(Dessinable dessin : this.lfg) {
+			if(dessin instanceof FigureColoree) {
+				figures.add((FigureColoree) dessin);
+			}
+		}
+		// Si il y a des figures colorees
+		if(!figures.isEmpty()) {
+			// On supprime les figures colorees et on en informe la vue
+			this.lfg.removeAll(figures);
 			this.setChanged();
 			this.notifyObservers();
 		}
