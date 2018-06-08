@@ -37,7 +37,7 @@ public class Etoile extends Polygone {
 			}
 		}
 	}
-	
+
 	@Override
 	public void transformation(int dx, int dy, int idxcarre) {
 		// Si l'indice fournis est dans le tableau de points

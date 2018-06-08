@@ -21,7 +21,7 @@ public class VueDessin extends JPanel implements Observer {
 
 	// Liste des figures colorees a dessiner sur le panel
 	private ArrayList<Dessinable> lfg;
-	
+
 	public VueDessin() {
 		this.setBackground(Color.WHITE);
 	}

@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Observable;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-
 // Classe representant un modele de dessin pour creer et modifier des figures colorees
 public class DessinModele extends Observable {
 
@@ -377,7 +375,7 @@ public class DessinModele extends Observable {
 			this.notifyObservers();
 		}
 	}
-	
+
 	/**
 	 * Methode pour supprimer tous les dessins
 	 */
@@ -390,7 +388,7 @@ public class DessinModele extends Observable {
 			this.notifyObservers();
 		}
 	}
-	
+
 	/**
 	 * Methodes pour supprimer tous les traces
 	 */
@@ -410,7 +408,7 @@ public class DessinModele extends Observable {
 			this.notifyObservers();
 		}
 	}
-	
+
 	/**
 	 * Methodes pour supprimer toutes els figures colorees
 	 */

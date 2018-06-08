@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 // Classe representant un trait
 public class Trait implements Serializable {
-	
+
 	// Abscisse du premier point du trait
 	private int x1;
 	// Ordonnee du premier point du trait
