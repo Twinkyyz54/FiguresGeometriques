@@ -26,13 +26,9 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.filechooser.FileFilter;
 
 import controleur.FabricantFigures;
-import controleur.ManipulateurFormes;
 import controleur.PanneauChoix;
-import controleur.TraceTrait;
 import modele.DessinModele;
 import modele.Dessinable;
-import modele.FigureColoree;
-import modele.Trait;
 import vue.VueDessin;
 
 // Classe representant la fenetre
@@ -176,7 +172,9 @@ public class Fenetre {
 		this.model = new DessinModele();
 		// On ajoute le controleur a la vue dessin pour la fabrication de figures
 		this.vue = new VueDessin();
-		this.vue.addMouseListener(new FabricantFigures(this.model));
+		FabricantFigures fabricant = new FabricantFigures(this.model);
+		this.vue.addMouseListener(fabricant);
+		this.vue.addMouseMotionListener(fabricant);
 		// On defini la vue dessin comme etant un observer de notre modele de dessin
 		this.model.addObserver(this.vue);
 		// On defini un scrollpane pour la vue dessin
@@ -227,7 +225,7 @@ public class Fenetre {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(urlfichier));
 			ArrayList<Dessinable> lfg = (ArrayList<Dessinable>) in.readObject();
 			this.model.setLfg(lfg);
-			this.model.setNbClic(0);
+			this.model.reinitialiserFigureEnCours();
 			in.close();
 		}
 	}

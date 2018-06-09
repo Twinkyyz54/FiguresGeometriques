@@ -12,27 +12,25 @@ public class Losange extends Quadrilatere {
 	public void modifierPoints(Point[] points) {
 		// On verifie que le tableau de points n'est pas null
 		if(points != null) {
-			// Si le tableau de points est de la taille du nombre de clics necessaires
-			if(points.length == this.nbClics()) {
+			// On compte le nombre de points ajoutes
+			int nbPoints = 0;
+			while(nbPoints < points.length && points[nbPoints] != null) {
+				++nbPoints;
+			}
+			// Si le nombre de points correspond au nombre de clics necessaires
+			if(nbPoints == this.nbClics()) {
+				// On modifie le tableau de points pour pouvoir construire la figure
 				Point p1 = points[0];
 				Point p2 = points[1];
-				// On verifie que les deux points pour la construction du losange ne sont pas null
-				if(p1 != null && p2 != null) {
-					// On construit le losange a partir de ces deux points
-					int diffx = p2.rendreX() - p1.rendreX();
-					int diffy = p2.rendreY() - p1.rendreY();
-					Point[] nouveaux = new Point[this.nbPoints()];
-					nouveaux[0] = p1;
-					nouveaux[1] = p2;
-					nouveaux[2] = new Point(p2.rendreX() + diffx, p1.rendreY());
-					nouveaux[3] = new Point(p2.rendreX(), p1.rendreY() - diffy);
-					super.modifierPoints(nouveaux);
-				}
-				// Sinon si la taille du tableau de points correspond au nombre de points necessaires
-			} else if(points.length == this.nbPoints()) {
-				// On modifie les points du losange avec les nouveaux
-				super.modifierPoints(points);
+				int diffx = p2.rendreX() - p1.rendreX();
+				int diffy = p2.rendreY() - p1.rendreY();
+				points = new Point[this.nbPoints()];
+				points[0] = p1;
+				points[1] = p2;
+				points[2] = new Point(p2.rendreX() + diffx, p1.rendreY());
+				points[3] = new Point(p2.rendreX(), p1.rendreY() - diffy);
 			}
+			super.modifierPoints(points);
 		}
 	}
 

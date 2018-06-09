@@ -62,7 +62,7 @@ public class PanneauChoix extends JPanel {
 				// Si l'utilisateur a choisi une couleur
 				if(c != null) {
 					if(PanneauChoix.this.model.getFigureEnCours() != null) {
-						PanneauChoix.this.model.getFigureEnCours().changeCouleur(c);
+						PanneauChoix.this.model.changerCouleur(PanneauChoix.this.model.getFigureEnCours(), c);
 					}
 					// Si on est en mode de manipulation on change aussi la couleur de la figure selectionnee si il y en a une
 					if(PanneauChoix.this.model.getType() == 2) {
@@ -82,6 +82,8 @@ public class PanneauChoix extends JPanel {
 				FigureColoree ancienne = PanneauChoix.this.model.getFigureEnCours();
 				if(ancienne != null) {
 					fc.changeCouleur(ancienne.getCouleur());
+					fc.mettrePleine(ancienne.estPleine());
+					fc.changerEpaisseur(ancienne.getEpaisseur());
 				}
 				PanneauChoix.this.model.construit(fc);
 			}
@@ -95,7 +97,7 @@ public class PanneauChoix extends JPanel {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				if(PanneauChoix.this.model.getFigureEnCours() != null) {
-					PanneauChoix.this.model.getFigureEnCours().changerEpaisseur(choixepaisseur.getValue());
+					PanneauChoix.this.model.changerEpaisseur(PanneauChoix.this.model.getFigureEnCours(), choixepaisseur.getValue());
 				}
 				if(PanneauChoix.this.model.getType() == 2) {
 					PanneauChoix.this.model.changerEpaisseur(PanneauChoix.this.model.getFigureSelectionnee(), choixepaisseur.getValue());
@@ -109,7 +111,7 @@ public class PanneauChoix extends JPanel {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if(PanneauChoix.this.model.getFigureEnCours() != null) {
-					PanneauChoix.this.model.getFigureEnCours().mettrePleine(choixpleine.isSelected());
+					PanneauChoix.this.model.mettrePleine(PanneauChoix.this.model.getFigureEnCours(), choixpleine.isSelected());
 				}
 				if(PanneauChoix.this.model.getType() == 2) {
 					PanneauChoix.this.model.mettrePleine(PanneauChoix.this.model.getFigureSelectionnee(), choixpleine.isSelected());
@@ -154,7 +156,9 @@ public class PanneauChoix extends JPanel {
 						choixpleine.setEnabled(true);
 						choixepaisseur.setEnabled(!choixpleine.isSelected());
 						PanneauChoix.this.model.changerType(0);
-						PanneauChoix.this.vue.addMouseListener(new FabricantFigures(PanneauChoix.this.model));
+						FabricantFigures l = new FabricantFigures(PanneauChoix.this.model);
+						PanneauChoix.this.vue.addMouseListener(l);
+						PanneauChoix.this.vue.addMouseMotionListener(l);
 						// Si on appui sur le bouton pour tracer des traits
 					} else if(radiobutton.getText().equals("Tracé à main levée")) {
 						choixforme.setEnabled(false);
@@ -184,7 +188,7 @@ public class PanneauChoix extends JPanel {
 						PanneauChoix.this.model.changerType(3);
 						PanneauChoix.this.vue.addMouseListener(new SuppressionFigure(PanneauChoix.this.model, PanneauChoix.this.vue));
 					}
-					PanneauChoix.this.model.setNbClic(0);
+					PanneauChoix.this.model.reinitialiserFigureEnCours();
 				}
 			}
 		};

@@ -19,15 +19,15 @@ public class Cercle extends FigureColoree {
 
 	@Override
 	public void modifierPoints(Point[] points) {
-		// Si le tableau de point n'est pas null et qu'il contient le nombre de points necessaires
-		if(points != null && points.length == this.nbPoints()) {
-			Point centre = points[0];
-			Point extremite = points[1];
-			// On verifie que les deux points pour creer le cercle ne sont pas null
-			if(centre != null && extremite != null) {
-				// On ajoute ces deux points au tableau de points
-				tab_mem[0] = centre;
-				tab_mem[1] = extremite;
+		// Si le tableau de point n'est pas null et qu'il contient moins ou autant de points encessaires pour la construction
+		if(points != null && points.length <= this.nbPoints()) {
+			// On reinitialise le tableau de points
+			this.tab_mem = new Point[this.nbPoints()];
+			// On ajoute les points au cercle
+			int i = 0;
+			while(i < points.length && points[i] != null) {
+				tab_mem[i] = points[i];
+				++i;
 			}
 		}
 	}
@@ -63,8 +63,8 @@ public class Cercle extends FigureColoree {
 					g2d.setStroke(new BasicStroke(this.epaisseur));
 					g2d.drawOval(centre.rendreX() - dist, centre.rendreY() - dist, dist * 2, dist * 2);
 				}
-				super.affiche(g);
 			}
+			super.affiche(g);
 		}
 	}
 }

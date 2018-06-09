@@ -12,26 +12,25 @@ public class Carre extends Quadrilatere {
 	public void modifierPoints(Point[] points) {
 		// On verifie que la tableau de points n'est pas null
 		if(points != null) {
-			// Si le nombre de points cliques correspond au nombre de clics necessaires
-			if(points.length == this.nbClics()) {
+			// On compte le nombre de points ajoutes
+			int nbPoints = 0;
+			while(nbPoints < points.length && points[nbPoints] != null) {
+				++nbPoints;
+			}
+			// Si le nombre de points correspond au nombre de clics necessaires
+			if(nbPoints == this.nbClics()) {
+				// On modifie le tableau de points pour pouvoir construire la figure
 				Point p1 = points[0];
 				Point p2 = points[1];
-				// Si les deux points necessaires a la construciton du carre ne sont pas null
-				if(p1 != null && p2 != null) {
-					// On construit le carre a partir de ces deux points
-					Point[] nouveaux = new Point[this.nbPoints()];
-					int diffx = p2.rendreX() - p1.rendreX();
-					int diffy = p2.rendreY() - p1.rendreY();
-					nouveaux[0] = p1;
-					nouveaux[1] = p2;
-					nouveaux[2] = new Point(p2.rendreX() + diffy, p2.rendreY() - diffx);
-					nouveaux[3] = new Point(p1.rendreX() + diffy, p1.rendreY() - diffx);
-					super.modifierPoints(nouveaux);
-				}
-				// Sinon si le nombre de points fournis correspond au nombre de points de la figure on la construit a partir
-			} else if(points.length == this.nbPoints()) {
-				super.modifierPoints(points);
+				points = new Point[this.nbPoints()];
+				int diffx = p2.rendreX() - p1.rendreX();
+				int diffy = p2.rendreY() - p1.rendreY();
+				points[0] = p1;
+				points[1] = p2;
+				points[2] = new Point(p2.rendreX() + diffy, p2.rendreY() - diffx);
+				points[3] = new Point(p1.rendreX() + diffy, p1.rendreY() - diffx);
 			}
+			super.modifierPoints(points);
 		}
 	}
 

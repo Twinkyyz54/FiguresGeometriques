@@ -12,25 +12,22 @@ public class Rectangle extends Quadrilatere {
 	public void modifierPoints(Point[] points) {
 		// Si le tableau de points n'est pas null
 		if(points != null) {
-			// Si le tableau de points et de la taille du nombre de clics necessaires
-			if(points.length == this.nbClics()) {
+			// On compte le nombre de points ajoutes
+			int nbPoints = 0;
+			while(nbPoints < points.length && points[nbPoints] != null) {
+				++nbPoints;
+			}
+			// Si le nombre de points correspond au nombre de clics necessaires
+			if(nbPoints == this.nbClics()) {
 				Point p1 = points[0];
 				Point p2 = points[1];
-				// On verifie que les deux points permettant la construction ne sont pas null
-				if(p1 != null && p2 != null) {
-					// On construit la figure a partir d'eux
-					Point[] nouveaux = new Point[4];
-					nouveaux[0] = p1;
-					nouveaux[2] = p2;
-					nouveaux[1] = new Point(p2.rendreX(), p1.rendreY());
-					nouveaux[3] = new Point(p1.rendreX(), p2.rendreY());
-					super.modifierPoints(nouveaux);
-				}
-				// Si le tableau contient deja tous les points pour afficher
-			} else if(points.length == this.nbPoints()) {
-				// On construit la figure avec ces points
-				super.modifierPoints(points);
+				points = new Point[4];
+				points[0] = p1;
+				points[2] = p2;
+				points[1] = new Point(p2.rendreX(), p1.rendreY());
+				points[3] = new Point(p1.rendreX(), p2.rendreY());
 			}
+			super.modifierPoints(points);
 		}
 	}
 

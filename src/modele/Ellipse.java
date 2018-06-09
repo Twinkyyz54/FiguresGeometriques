@@ -33,13 +33,20 @@ public class Ellipse extends FigureColoree {
 
 	@Override
 	public void modifierPoints(Point[] points) {
-		// Si le tableau de point n'est pas null et qu'il contient le bon nombre de points
-		if(points != null && points.length == this.nbPoints()) {
-			Point p1 = points[0];
-			Point p2 = points[1];
-			Point p3 = points[2];
-			// On verifie que les 3 points necessaires a la construction de l'ellipse ne sont pas nulles
-			if(p1 != null && p2 != null && p3 != null) {
+		// Si le tableau de point n'est pas null et qu'il contient moins ou autant de points necessaires a la construction
+		if(points != null && points.length <= this.nbPoints()) {
+			// On reinitialise le tableau de points
+			this.tab_mem = new Point[this.nbPoints()];
+			// On recupere le nombre de points ajoutes dans le tableau points
+			int nbPoints = 0;
+			while(nbPoints < points.length && points[nbPoints] != null) {
+				++nbPoints;
+			}
+			// Si il correspond au nombre de points pour construrie la figure
+			if(nbPoints == this.nbPoints()) {
+				Point p1 = points[0];
+				Point p2 = points[1];
+				Point p3 = points[2];
 				// On construit l'ellipse a partir de ces 3 points
 				int distx = Math.abs(p2.rendreX() - p1.rendreX());
 				int disty = Math.abs(p3.rendreY() - p1.rendreY());
@@ -47,6 +54,11 @@ public class Ellipse extends FigureColoree {
 				tab_mem[1] = new Point(p2.rendreX(), p1.rendreY());
 				tab_mem[2] = new Point(p1.rendreX(), p3.rendreY());
 				this.ellipse = new Ellipse2D.Double(p1.rendreX() - distx, p1.rendreY() - disty, 2 * distx, 2 * disty);
+			} else if(nbPoints > 0) {
+				tab_mem[0] = points[0];
+				if(nbPoints == 2) {
+					tab_mem[1] = new Point(points[1].rendreX(), points[0].rendreY());
+				}
 			}
 		}
 	}
@@ -68,11 +80,11 @@ public class Ellipse extends FigureColoree {
 					g.fillOval(p1.rendreX() - distx, p1.rendreY() - disty, 2 * distx, 2 * disty);
 				} else {
 					Graphics2D g2d = (Graphics2D) g;
-					g2d.setStroke(new BasicStroke(4));
+					g2d.setStroke(new BasicStroke(this.epaisseur));
 					g.drawOval(p1.rendreX() - distx, p1.rendreY() - disty, 2 * distx, 2 * disty);
 				}
-				super.affiche(g);
 			}
+			super.affiche(g);
 		}
 	}
 }

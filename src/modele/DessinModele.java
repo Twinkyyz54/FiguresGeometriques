@@ -54,7 +54,7 @@ public class DessinModele extends Observable {
 	 */
 	public void changerCouleur(FigureColoree figure, Color couleur) {
 		// On verifie que la figure n'est pas null et qu'elle appartient a la liste des figures
-		if(figure != null && this.lfg.contains(figure)) {
+		if(figure != null && (this.lfg.contains(figure) || this.figureEnCours == figure)) {
 			// On change sa couleur et on informe la vue
 			figure.changeCouleur(couleur);
 			this.setChanged();
@@ -72,7 +72,7 @@ public class DessinModele extends Observable {
 	 */
 	public void changerPoints(FigureColoree figure, Point[] points) {
 		// On verifie que la figure n'est pas null et qu'elle appartient a la liste des figures
-		if(figure != null && this.lfg.contains(figure)) {
+		if(figure != null && (this.lfg.contains(figure) || this.figureEnCours == figure)) {
 			// On change ses points et on informe la vue
 			figure.modifierPoints(points);
 			this.setChanged();
@@ -93,6 +93,8 @@ public class DessinModele extends Observable {
 			this.figureEnCours = figure;
 			this.nbClic = 0;
 			this.points_Cliques = new Point[figure.nbClics()];
+			this.setChanged();
+			this.notifyObservers();
 		}
 	}
 
@@ -103,31 +105,43 @@ public class DessinModele extends Observable {
 	 *            L'abscisse du point a ajouter
 	 * @param y
 	 *            L'ordonnee du point a ajouter
+	 * @param previsualisation
+	 *            Boolean indiquant si il s'agit d'un point pour la previsualisation ou non
 	 */
-	public void ajouterPoint(int x, int y) {
+	public void ajouterPoint(int x, int y, boolean previsualisation) {
 		// On verifie qu'il y a bien une figure en cours
 		if(this.figureEnCours != null) {
-			// On ajoute le nouveau point au points cliques
-			this.points_Cliques[this.nbClic++] = new Point(x, y);
-			// Si on a atteint le nombre de clics necessaires pour creer la figure
-			if(this.nbClic == this.figureEnCours.nbClics()) {
-				// On modifie les points de la figure en cours avec deux cliques et on l'ajoute a la liste des figures crees
-				this.figureEnCours.modifierPoints(this.points_Cliques);
-				this.ajouter(this.figureEnCours);
-				// On tente d'instantier une figure du meme type que l'ancienne avec la meme couleur, remplissage...
-				try {
-					FigureColoree nouvelle = this.figureEnCours.getClass().newInstance();
-					nouvelle.changeCouleur(this.figureEnCours.couleur);
-					nouvelle.mettrePleine(this.figureEnCours.pleine);
-					nouvelle.changerEpaisseur(this.figureEnCours.epaisseur);
-					this.figureEnCours = nouvelle;
-					this.points_Cliques = new Point[this.figureEnCours.nbClics()];
-				} catch(InstantiationException | IllegalAccessException e) {
-					this.figureEnCours = null;
-					this.points_Cliques = new Point[0];
+			// On ajoute le point dans al liste des points cliques
+			this.points_Cliques[this.nbClic] = new Point(x, y);
+			// On modifie la figure avec les nouveaux points
+			this.figureEnCours.modifierPoints(this.points_Cliques);
+			// Si ce n'est pas un point de visualisation
+			if(!previsualisation) {
+				// On increment le nombre de points cliques de 1
+				++this.nbClic;
+				// Si on a atteint le nombre de clics necessaires pour creer la figure
+				if(this.nbClic == this.figureEnCours.nbClics()) {
+					// On ajoute la figure a la liste des figures
+					this.ajouter(this.figureEnCours);
+					// On tente d'instantier une figure du meme type que l'ancienne avec la meme couleur, remplissage...
+					try {
+						FigureColoree nouvelle = this.figureEnCours.getClass().newInstance();
+						nouvelle.changeCouleur(this.figureEnCours.couleur);
+						nouvelle.mettrePleine(this.figureEnCours.pleine);
+						nouvelle.changerEpaisseur(this.figureEnCours.epaisseur);
+						this.figureEnCours = nouvelle;
+						this.points_Cliques = new Point[this.figureEnCours.nbClics()];
+					} catch(InstantiationException | IllegalAccessException e) {
+						this.figureEnCours = null;
+						this.points_Cliques = new Point[0];
+					}
+					// On reinitialise le nombre de clics a 0 dans tous les cas
+					this.nbClic = 0;
 				}
-				// On reinitialise le nombre de clics a 0 dans tous les cas
-				this.nbClic = 0;
+			} else {
+				// Sinon on informe la vue de la modification de la figure en cours
+				this.setChanged();
+				this.notifyObservers();
 			}
 		}
 	}
@@ -139,16 +153,6 @@ public class DessinModele extends Observable {
 	 */
 	public int getNbClic() {
 		return this.nbClic;
-	}
-
-	/**
-	 * Methode permettant de redefinir le de nombre de clics effectues pour construire la figure en cours
-	 * 
-	 * @param nbClic
-	 *            Le nouveau nombre de clics effectues pour constuire la figure en cours
-	 */
-	public void setNbClic(int nbClic) {
-		this.nbClic = nbClic;
 	}
 
 	/**
@@ -305,7 +309,7 @@ public class DessinModele extends Observable {
 	 */
 	public void mettrePleine(FigureColoree fc, boolean pleine) {
 		// On verifie que la figure n'est pas null et que la liste des figures la contient
-		if(fc != null && this.lfg.contains(fc)) {
+		if(fc != null && (this.lfg.contains(fc) || this.figureEnCours == fc)) {
 			// On change son remplissage et on en informe le contructeur
 			fc.mettrePleine(pleine);
 			this.setChanged();
@@ -323,7 +327,7 @@ public class DessinModele extends Observable {
 	 */
 	public void changerEpaisseur(FigureColoree fc, int epaisseur) {
 		// On verifie que la figure n'est pas null et que la liste des figures la contient
-		if(fc != null && this.lfg.contains(fc)) {
+		if(fc != null && (this.lfg.contains(fc) || this.figureEnCours == fc)) {
 			// On change l'epaisseur de la figure et on en informe la vue
 			fc.changerEpaisseur(epaisseur);
 			this.setChanged();
@@ -427,5 +431,16 @@ public class DessinModele extends Observable {
 			this.setChanged();
 			this.notifyObservers();
 		}
+	}
+	
+	/**
+	 * Methode permettant de reinitiliser la figure en cours en supprimant tous ces points et les points cliques
+	 */
+	public void reinitialiserFigureEnCours() {
+		this.points_Cliques = new Point[this.points_Cliques.length];
+		this.figureEnCours.modifierPoints(points_Cliques);
+		this.nbClic = 0;
+		this.setChanged();
+		this.notifyObservers();
 	}
 }

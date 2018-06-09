@@ -47,8 +47,8 @@ public abstract class Polygone extends FigureColoree {
 					g2d.setStroke(new BasicStroke(this.epaisseur));
 					g.drawPolygon(this.p);
 				}
-				super.affiche(g);
 			}
+			super.affiche(g);
 		}
 	}
 
@@ -59,19 +59,30 @@ public abstract class Polygone extends FigureColoree {
 
 	@Override
 	public void modifierPoints(Point[] points) {
-		// On verifie que le tableau de points n'est pas null et que sa taille correspond bien au nombre de points de la figure
-		if(points != null && points.length == this.nbPoints()) {
-			// On recontruit le polygon et le tableau de points a partir des points fournis
-			Polygon nvpoly = new Polygon();
-			for(int i = 0; i < points.length; i++) {
-				Point point = points[i];
-				// Si un point du tableau est null on ne modifie pas les points du tableau precedent
-				if(point == null)
-					return;
-				nvpoly.addPoint(point.rendreX(), point.rendreY());
+		// On verifie que le tableau de points n'est pas null et qu'il contient moins ou autant de points encessaires pour la construction
+		if(points != null && points.length <= this.nbPoints()) {
+			// On reinitialise le tableau de points et le polygone
+			this.tab_mem = new Point[this.nbPoints()];
+			this.p = new Polygon();
+			// On compte le nombre de points ajoutes au polygone
+			int nbPoints = 0;
+			while(nbPoints < points.length && points[nbPoints] != null) {
+				++nbPoints;
 			}
-			this.p = nvpoly;
-			this.tab_mem = points;
+			// Si le nombre de points est identique au nombre de points pour construire la figure
+			if(nbPoints == this.nbPoints()) {
+				// On construit la figure en ajoutant les points au tableau et au polygone
+				for(int i = 0; i < points.length; i++) {
+					Point point = points[i];
+					this.tab_mem[i] = point;
+					this.p.addPoint(point.rendreX(), point.rendreY());
+				}
+			} else {
+				// On ajoute seulement els points au tableau
+				for(int i = 0; i < points.length; i++) {
+					this.tab_mem[i] = points[i];
+				}
+			}
 		}
 	}
 }

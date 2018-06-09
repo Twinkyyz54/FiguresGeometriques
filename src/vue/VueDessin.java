@@ -21,8 +21,11 @@ public class VueDessin extends JPanel implements Observer {
 
 	// Liste des figures colorees a dessiner sur le panel
 	private ArrayList<Dessinable> lfg;
+	// Figure en cours du model
+	private Dessinable enCours;
 
 	public VueDessin() {
+		this.lfg = new ArrayList<Dessinable>();
 		this.setBackground(Color.WHITE);
 	}
 
@@ -31,8 +34,9 @@ public class VueDessin extends JPanel implements Observer {
 		// Si l'objet observable est bien un modele
 		if(o instanceof DessinModele) {
 			// On recupere les constructions de ce modele et on redessine la vue dessin
-			DessinModele dessin = (DessinModele) o;
-			this.lfg = dessin.getLfg();
+			DessinModele model = (DessinModele) o;
+			this.lfg = model.getLfg();
+			this.enCours = model.getFigureEnCours();
 			this.repaint();
 			this.revalidate();
 		}
@@ -41,11 +45,13 @@ public class VueDessin extends JPanel implements Observer {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		// Si il y a des figures, on les affichent
-		if(this.lfg != null) {
-			for(Dessinable figure : this.lfg) {
-				figure.affiche(g);
-			}
+		// On affiche toutes le figures
+		for(Dessinable figure : this.lfg) {
+			figure.affiche(g);
+		}
+		// On affiche aussi la figure en cours en previsualisation si il y en a une
+		if(this.enCours != null) {
+			this.enCours.affiche(g);
 		}
 	}
 
@@ -54,33 +60,31 @@ public class VueDessin extends JPanel implements Observer {
 		int maxX = 0;
 		int maxY = 0;
 		// On retourne la position de la plus grande abscisse et ordonnee parmis les figures et traits
-		if(this.lfg != null) {
-			for(Dessinable figure : this.lfg) {
-				if(figure instanceof FigureColoree) {
-					FigureColoree fc = (FigureColoree) figure;
-					for(Point p : fc.getTabMem()) {
-						if(p.rendreX() > maxX) {
-							maxX = p.rendreX();
-						}
-						if(p.rendreY() > maxY) {
-							maxY = p.rendreY();
-						}
+		for(Dessinable figure : this.lfg) {
+			if(figure instanceof FigureColoree) {
+				FigureColoree fc = (FigureColoree) figure;
+				for(Point p : fc.getTabMem()) {
+					if(p.rendreX() > maxX) {
+						maxX = p.rendreX();
 					}
-				} else if(figure instanceof Trace) {
-					Trace trace = (Trace) figure;
-					for(Trait t : trace.getTraits()) {
-						if(t.getX1() > maxX) {
-							maxX = t.getX1();
-						}
-						if(t.getX2() > maxX) {
-							maxX = t.getX2();
-						}
-						if(t.getY1() > maxY) {
-							maxY = t.getY1();
-						}
-						if(t.getY2() > maxY) {
-							maxY = t.getY2();
-						}
+					if(p.rendreY() > maxY) {
+						maxY = p.rendreY();
+					}
+				}
+			} else if(figure instanceof Trace) {
+				Trace trace = (Trace) figure;
+				for(Trait t : trace.getTraits()) {
+					if(t.getX1() > maxX) {
+						maxX = t.getX1();
+					}
+					if(t.getX2() > maxX) {
+						maxX = t.getX2();
+					}
+					if(t.getY1() > maxY) {
+						maxY = t.getY1();
+					}
+					if(t.getY2() > maxY) {
+						maxY = t.getY2();
 					}
 				}
 			}

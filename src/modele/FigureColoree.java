@@ -1,7 +1,9 @@
 package modele;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.io.Serializable;
 
 // Classe abstraite representant une figure coloree
@@ -55,12 +57,32 @@ public abstract class FigureColoree implements Dessinable, Serializable {
 
 	@Override
 	public void affiche(Graphics g) {
-		// Si le graphique fournis n'est pas null et que la figure est selectionnee
-		if(g != null && selected) {
-			// On affiche les carres de selection de la figure
-			g.setColor(Color.BLACK);
-			for(Point p : tab_mem) {
-				g.fillRect(p.rendreX() - TAILLE_CARRE_SELECTION / 2, p.rendreY() - TAILLE_CARRE_SELECTION / 2, TAILLE_CARRE_SELECTION, TAILLE_CARRE_SELECTION);
+		// Si le graphique fournis n'est pas null
+		if(g != null) {
+			// On recupere le nombre de point ajoutes a la figure
+			int nbpoints = 0;
+			while(nbpoints < this.tab_mem.length && this.tab_mem[nbpoints] != null) {
+				nbpoints++;
+			}
+			// Si il y en a au moins 1 point et que la figure n'est pas completee
+			if(nbpoints > 1 && nbpoints < this.nbPoints()) {
+				// On affiche les carres de selection des points et on les relies par des traits
+				Graphics2D g2d = (Graphics2D) g;
+				g2d.setColor(Color.BLACK);
+				g2d.setStroke(new BasicStroke(this.epaisseur));
+				Point precedent = this.tab_mem[0];
+				for(int i = 1; i < nbpoints; i++) {
+					Point actuel = this.tab_mem[i];
+					g2d.drawLine(precedent.rendreX(), precedent.rendreY(), actuel.rendreX(), actuel.rendreY());
+					precedent = actuel;
+				}
+				// Sinon si la figure est completee et quelle est selectionnee
+			} else if(selected) {
+				// On affiche les carres de selection de la figure
+				g.setColor(Color.BLACK);
+				for(Point p : tab_mem) {
+					g.fillRect(p.rendreX() - TAILLE_CARRE_SELECTION / 2, p.rendreY() - TAILLE_CARRE_SELECTION / 2, TAILLE_CARRE_SELECTION, TAILLE_CARRE_SELECTION);
+				}
 			}
 		}
 	}

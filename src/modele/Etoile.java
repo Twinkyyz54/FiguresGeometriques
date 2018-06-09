@@ -1,5 +1,6 @@
 package modele;
 
+// Classe representant une figure de type Etoile
 public class Etoile extends Polygone {
 
 	@Override
@@ -14,27 +15,31 @@ public class Etoile extends Polygone {
 
 	@Override
 	public void modifierPoints(Point[] points) {
+		// Si le tableau de points n'est pas null
 		if(points != null) {
-			if(points.length == this.nbClics()) {
+			// On compte le nombre de points ajoutes
+			int nbPoints = 0;
+			while(nbPoints < points.length && points[nbPoints] != null) {
+				++nbPoints;
+			}
+			// Si le nombre de points correspond au nombre de clics
+			if(nbPoints == this.nbClics()) {
+				// On fait les modifications du tableau de points pour pouvoir construire la figure
 				Point centre = points[0];
 				Point extremite = points[1];
-				if(centre != null && extremite != null) {
-					double dist = centre.distance(extremite);
-					if(dist > 0) {
-						Point[] nouveaux = new Point[10];
-						double angleInitial = extremite.recupererAngle(centre);
-						double angle = 72 * (Math.PI / 180);
-						double ajout = 36 * (Math.PI / 180);
-						for(int i = 0; i < 5; i++) {
-							nouveaux[2 * i] = new Point(centre.rendreX() + (int) Math.round(Math.cos(angleInitial + i * angle) * dist), centre.rendreY() + (int) Math.round(Math.sin(-(angleInitial + i * angle)) * dist));
-							nouveaux[2 * i + 1] = new Point(centre.rendreX() + (int) Math.round(Math.cos(angleInitial + ajout + i * angle) * (dist / 3)), centre.rendreY() + (int) Math.round(Math.sin(-(angleInitial + ajout + i * angle)) * (dist / 3)));
-						}
-						super.modifierPoints(nouveaux);
+				double dist = centre.distance(extremite);
+				if(dist > 0) {
+					points = new Point[10];
+					double angleInitial = extremite.recupererAngle(centre);
+					double angle = 72 * (Math.PI / 180);
+					double ajout = 36 * (Math.PI / 180);
+					for(int i = 0; i < 5; i++) {
+						points[2 * i] = new Point(centre.rendreX() + (int) Math.round(Math.cos(angleInitial + i * angle) * dist), centre.rendreY() + (int) Math.round(Math.sin(-(angleInitial + i * angle)) * dist));
+						points[2 * i + 1] = new Point(centre.rendreX() + (int) Math.round(Math.cos(angleInitial + ajout + i * angle) * (dist / 3)), centre.rendreY() + (int) Math.round(Math.sin(-(angleInitial + ajout + i * angle)) * (dist / 3)));
 					}
 				}
-			} else if(points.length == this.nbPoints()) {
-				super.modifierPoints(points);
 			}
+			super.modifierPoints(points);
 		}
 	}
 
